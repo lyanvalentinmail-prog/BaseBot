@@ -109,6 +109,10 @@ async function startBot() {
     if (!number) {
       console.log('\n⚠️  Tienes activado "usePairingCode" pero NO pusiste tu número en config.js (pairingNumber).')
       console.log('    👉 Edita config.js o inicia con: npm run qr\n')
+    } else if (number.length < 8 || number.length > 15) {
+      console.log(`\n⚠️  El pairingNumber "${number}" parece estar incompleto.`)
+      console.log('    Debe ser el número COMPLETO: código de país + número, todo junto.')
+      console.log('    Ejemplo Uruguay: 59896719709  |  México: 521234567890\n')
     } else {
       setTimeout(async () => {
         try {
