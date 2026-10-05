@@ -23,12 +23,13 @@
 8. [⚙️ PERSONALIZACIÓN (config.js)](#️-personalización-configjs)
 9. [🌙 API KEY — qué es y cómo conseguirla](#-api-key--qué-es-y-cómo-conseguirla)
 10. [📚 LISTA COMPLETA DE COMANDOS](#-lista-completa-de-comandos)
-11. [➕ CÓMO AGREGAR PLUGINS (tus propios comandos)](#-cómo-agregar-plugins-tus-propios-comandos)
-12. [🎨 CAMBIAR EL ESTILO DEL MENÚ](#-cambiar-el-estilo-del-menú)
-13. [🗂️ Estructura del proyecto](#️-estructura-del-proyecto)
-14. [🔧 SOLUCIÓN DE ERRORES](#-solución-de-errores)
-15. [❓ Preguntas frecuentes](#-preguntas-frecuentes)
-16. [⚠️ Aviso importante](#️-aviso-importante)
+11. [🌐 APIS EXTERNAS GRATIS (cómo conseguir cada key)](#-apis-externas-gratis-cómo-conseguir-cada-key)
+12. [➕ CÓMO AGREGAR PLUGINS (tus propios comandos)](#-cómo-agregar-plugins-tus-propios-comandos)
+13. [🎨 CAMBIAR EL ESTILO DEL MENÚ](#-cambiar-el-estilo-del-menú)
+14. [🗂️ Estructura del proyecto](#️-estructura-del-proyecto)
+15. [🔧 SOLUCIÓN DE ERRORES](#-solución-de-errores)
+16. [❓ Preguntas frecuentes](#-preguntas-frecuentes)
+17. [⚠️ Aviso importante](#️-aviso-importante)
 
 ---
 
@@ -44,6 +45,7 @@
   - 👤 **Stalk:** GitHub, TikTok, Threads
   - 🛠️ **Herramientas:** traductor, clima, hora mundial, letras bonitas, capturas de web, captura de tweets, info de YouTube y de grupos de WhatsApp
 - ✅ **Comandos de grupo:** hidetag, link, kick, promote, demote
+- ✅ **🌐 APIs externas gratis** (de [freeapihub.com](https://freeapihub.com/apis)): películas, GIFs, fútbol en vivo, voz IA, países, anime, libros, clima…
 - ✅ **🎮 Juegos:** dado, moneda, suerte, piedra-papel-tijera, ship/top de compatibilidad
 - ✅ **👑 Comandos de owner:** modo self/público, cambiar prefijo/nombre, unirse a grupos, reiniciar…
 - ✅ **🎉 Bienvenida y despedida** automática en grupos (mensajes personalizables)
@@ -299,6 +301,8 @@ npm start
 | `apiUrl` | URL base de la API Akari | `'https://apiakari.vercel.app'` |
 | `apiKey` | ⭐ Tu API key | `'UDYRB6'` |
 | `apiTimeout` | Tiempo máx. de espera de la API (ms) | `120000` |
+| `omdbKey` / `giphyKey` / `footballKey` / `elevenlabsKey` | 🌐 Keys gratuitas de las APIs externas | Ver [🌐 APIs externas](#-apis-externas-gratis-cómo-conseguir-cada-key) |
+| `elevenVoiceId` | ID de la voz del comando `.voz` | `'EXAVITQu4vr4xnSDxMaL'` |
 | `owner` | Números de los dueños (array) | `['521234567890', '34612345678']` |
 | `ownerName` | Nombre del creador | `'Leonel'` |
 | `botName` | Nombre del bot (sale en el menú) | `'𝙼𝚒 𝙱𝚘𝚝 ✦'` |
@@ -451,6 +455,29 @@ El bot **NO necesita más keys**, pero si algún día agregas otras APIs externa
 | `.promote` | `@usuario` | Da admin |
 | `.demote` | `@usuario` | Quita admin |
 
+### 🌐 APIs Externas — SIN key (¡funcionan ya!)
+| Comando | Uso | Descripción |
+|---|---|---|
+| `.fraseanime` | — | Frase random de anime 🌸 |
+| `.pais` | `<nombre>` | Info + bandera de un país |
+| `.quees` | `<tema>` | Respuesta instantánea (mejor en inglés) |
+| `.definir` | `<palabra>` | Diccionario inglés + pronunciación 🔊 |
+| `.comida` | — | Foto random de comida 🍕 |
+| `.libro` | `<título>` | Busca libros + portada |
+| `.anime` | `<nombre>` | Busca animes + póster |
+| `.clima2` | `<ciudad>` | Clima pro (Open-Meteo) |
+
+### 🌐 APIs Externas — CON key gratis
+| Comando | Uso | Descripción | Key |
+|---|---|---|---|
+| `.pelicula` | `<título>` | Póster + datos de pelis/series | `omdbKey` |
+| `.gif` | `<búsqueda>` | GIFs de Giphy (se reproducen solos) | `giphyKey` |
+| `.futbol` | — | ⚽ Partidos de hoy con marcadores | `footballKey` |
+| `.envivo` | — | 🔴 Partidos jugándose AHORA | `footballKey` |
+| `.voz` | `<texto>` | Texto a voz natural (español OK) 🔊 | `elevenlabsKey` |
+
+> 🔑 ¿No pusiste la key? Tranquilo: el comando te responderá **con el enlace exacto** para conseguirla gratis. Ver [🌐 APIs externas](#-apis-externas-gratis-cómo-conseguir-cada-key).
+
 ### 🎮 Juegos
 | Comando | Uso | Descripción |
 |---|---|---|
@@ -472,6 +499,42 @@ El bot **NO necesita más keys**, pero si algún día agregas otras APIs externa
 | `.join` | `<enlace>` | El bot se une a un grupo |
 | `.leave` | — | El bot sale del grupo |
 | `.restart` | — | Reinicia el bot (con PM2/panel vuelve solo) |
+
+---
+
+## 🌐 APIS EXTERNAS GRATIS (cómo conseguir cada key)
+
+El bot suma comandos de APIs de **[freeapihub.com/apis](https://freeapihub.com/apis)**. Las que dicen **SIN key** ya funcionan. Para las demás, así consigues la key **gratis** (2 minutos cada una):
+
+### 🎬 OMDb → `omdbKey` (películas y series)
+1. Entra a **https://www.omdbapi.com/apikey.aspx**
+2. Pon tu email, elige el plan **FREE!** y confirma desde el correo que te llega
+3. Te dan tu key (ej: `a1b2c3d4`) → pégala en `config.js`
+4. Límite gratis: **1.000 peticiones/día**
+
+### 🎞️ Giphy → `giphyKey` (GIFs)
+1. Entra a **https://developers.giphy.com** y crea cuenta
+2. Pulsa **"Create an App"** → elige **API** (no SDK) → ponle cualquier nombre
+3. Copia la **API Key** que aparece → pégala en `config.js`
+
+### ⚽ API-FOOTBALL → `footballKey` (partidos y marcadores)
+1. Entra a **https://www.api-football.com** y crea una cuenta gratuita
+2. En tu **Dashboard** verás tu **API-KEY**
+3. Pégala en `config.js`
+4. Límite gratis: **100 peticiones/día** (de sobra para uso normal)
+
+### 🔊 ElevenLabs → `elevenlabsKey` (texto a voz)
+1. Entra a **https://elevenlabs.io** y regístrate
+2. Ve a **Profile → API Keys** y crea una key
+3. Pégala en `config.js`
+4. Incluye **10.000 caracteres/mes gratis**; la voz por defecto está en `elevenVoiceId` (puedes elegir otra en su web y cambiar el ID)
+
+> ✅ Después de pegar las keys: guarda `config.js` y **reinicia el bot** (`CTRL + C` → `npm start`).
+> 💡 Si un comando necesita key y no la pusiste, el propio bot te responde con estas instrucciones en WhatsApp.
+
+### 🆓 Y estas NO necesitan key de nada
+`.fraseanime` · `.pais` · `.quees` · `.definir` · `.comida` · `.libro` · `.anime` · `.clima2`
+Funcionan desde ya, sin registrar nada. 🎉
 
 ---
 
@@ -537,7 +600,7 @@ module.exports = [
 | `paramName` | Cómo se ve en la ayuda (`'<url>'`, `'<búsqueda>'`…) |
 | `prefer` | `'video'` \| `'audio'` \| `'image'` \| `'document'` \| `'sticker'` |
 | `alias` | Otros nombres del comando: `alias: ['tt', 'tiktokdl']` |
-| `tag` | Categoría del menú (`'ia'`, `'descargas'`, `'imagen'`, `'maker'`, `'busqueda'`, `'stalk'`, `'herramientas'`, `'grupo'`, `'principal'`) |
+| `tag` | Categoría del menú (`'ia'`, `'descargas'`, `'imagen'`, `'maker'`, `'busqueda'`, `'stalk'`, `'herramientas'`, `'externas'`, `'juegos'`, `'grupo'`, `'owner'`, `'principal'`) |
 | `ej` | Ejemplo que sale si el usuario no escribe nada |
 
 ### 🅱️ Ejemplo: comando manual (control total)
@@ -771,6 +834,9 @@ BaseBot/
 │   │   └── stalk.js       → github, tiktok, threads
 │   ├── 📂 herramientas/
 │   │   └── tools.js       → translate, weather, font, ssweb…
+│   ├── 📂 externas/
+│   │   ├── sin-key.js     → pais, anime, libro, clima2, quees… (gratis sin key)
+│   │   └── con-key.js     → pelicula, gif, futbol, voz (key gratis)
 │   ├── 📂 juegos/
 │   │   └── juegos.js      → dado, moneda, suerte, ppt, ship, top
 │   ├── 📂 grupo/

@@ -15,6 +15,18 @@ module.exports = {
   apiTimeout: 120000,                      // Tiempo máx. de espera de la API en ms (120 s)
 
   // ──────────────────────────────────────────────
+  // 🌐 APIS EXTERNAS GRATIS (opcionales)
+  // ──────────────────────────────────────────────
+  //  Estas keys son GRATIS pero debes registrarte en cada web.
+  //  Déjalas vacías y el comando te recordará cómo conseguirlas. 👇
+  // ──────────────────────────────────────────────
+  omdbKey: '',          // 🎬 Películas/series → https://www.omdbapi.com/apikey.aspx (te llega por email, 1.000/día)
+  giphyKey: '',         // 🎞️ GIFs → https://developers.giphy.com → "Create an App"
+  footballKey: '',      // ⚽ Fútbol → https://www.api-football.com → registro → Dashboard (ahí está tu key)
+  elevenlabsKey: '',    // 🔊 Voz → https://elevenlabs.io → Profile → API Keys (10.000 caract./mes)
+  elevenVoiceId: 'EXAVITQu4vr4xnSDxMaL', // ID de la voz (esta es "Rachel", deja la que viene o elige otra en la web)
+
+  // ──────────────────────────────────────────────
   // 👑 DUEÑOS DEL BOT
   // ──────────────────────────────────────────────
   owner: ['51999999999'],                  // Números de los dueños SIN "+", SIN espacios y CON código de país
@@ -123,6 +135,7 @@ module.exports = {
       busqueda:     { name: 'Búsquedas',               icon: '🔍' },
       stalk:        { name: 'Stalk',                   icon: '👤' },
       herramientas: { name: 'Herramientas',            icon: '🛠️' },
+      externas:     { name: 'APIs Externas',           icon: '🌐' },
       juegos:       { name: 'Juegos',                  icon: '🎮' },
       grupo:        { name: 'Grupo',                   icon: '👥' },
       owner:        { name: 'Solo Owner',              icon: '👑' }

@@ -47,7 +47,7 @@ let menu = async (m, { conn, usedPrefix }) => {
   const byTag = {}
   let total = 0
   for (const plugin of Object.values(global.plugins || {})) {
-    for (const p of (Array.isArray(plugin) ? plugin : [plugin])) {
+    for (const p of [plugin].flat(Infinity)) {
       if (!p?.help?.length) continue
       const tag = p.tags?.[0] || 'otros'
       if (!byTag[tag]) byTag[tag] = []

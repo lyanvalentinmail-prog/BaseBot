@@ -76,7 +76,7 @@ module.exports = [
       const files = Object.keys(global.plugins || {})
       let total = 0
       for (const plugin of Object.values(global.plugins)) {
-        for (const p of (Array.isArray(plugin) ? plugin : [plugin])) {
+        for (const p of [plugin].flat(Infinity)) {
           if (p?.command) total += (Array.isArray(p.command) ? p.command : [p.command]).filter(c => typeof c === 'string').length
         }
       }

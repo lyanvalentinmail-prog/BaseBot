@@ -70,7 +70,8 @@ module.exports = async function handler(conn, raw) {
 
   for (const file of Object.keys(global.plugins || {})) {
     const plugin = global.plugins[file]
-    const list = Array.isArray(plugin) ? plugin : [plugin]
+    // .flat(Infinity) acepta exports de un objeto, un array, o arrays anidados
+    const list = [plugin].flat(Infinity)
 
     for (const p of list) {
       if (!p || !p.command) continue
