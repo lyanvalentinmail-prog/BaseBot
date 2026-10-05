@@ -44,7 +44,10 @@
   - 👤 **Stalk:** GitHub, TikTok, Threads
   - 🛠️ **Herramientas:** traductor, clima, hora mundial, letras bonitas, capturas de web, captura de tweets, info de YouTube y de grupos de WhatsApp
 - ✅ **Comandos de grupo:** hidetag, link, kick, promote, demote
-- ✅ **Menú automático** que se genera solo con tus comandos
+- ✅ **🎮 Juegos:** dado, moneda, suerte, piedra-papel-tijera, ship/top de compatibilidad
+- ✅ **👑 Comandos de owner:** modo self/público, cambiar prefijo/nombre, unirse a grupos, reiniciar…
+- ✅ **🎉 Bienvenida y despedida** automática en grupos (mensajes personalizables)
+- ✅ **Menú automático** que se genera solo con tus comandos, con **estilo editable desde `config.js`** 🎨
 - ✅ **Recarga en caliente:** edita un plugin y el bot lo recarga sin reiniciar 🔥
 - ✅ **Súper personalizable:** todo se cambia desde **un solo archivo** (`config.js`)
 - ✅ **Acepta imágenes citadas:** en `removebg`, `iqc` y `fakenote` puedes citar una foto y el bot la sube a internet por ti
@@ -312,6 +315,9 @@ npm start
 | `autoRead` | Marca los comandos como leídos (✓✓ azul) | `true` |
 | `mess.*` | Todos los textos del bot (espera, errores, permisos…) | ¡Tradúcelos o cámbialos a tu estilo! |
 | `menu.*` | 🎨 **Estilo completo del `.menu`** (encabezado, categorías, iconos, orden) | Ver [🎨 Cambiar el estilo del menú](#-cambiar-el-estilo-del-menú) |
+| `welcome` | Activa/desactiva la bienvenida en grupos | `true` / `false` |
+| `welcomeMsg` | Mensaje cuando alguien entra. Placeholders: `@user` `{group}` `{count}` | `'👋 ¡Bienvenido/a @user a *{group}*! 🎉…'` |
+| `goodbyeMsg` | Mensaje cuando alguien sale (mismos placeholders) | `'👋 @user salió del grupo…'` |
 
 > 🎨 **Tip:** puedes poner emojis y letras especiales en `botName`, `wm` y los mensajes. Usa el comando `.font tu texto` del propio bot para generar letras bonitas.
 
@@ -445,6 +451,28 @@ El bot **NO necesita más keys**, pero si algún día agregas otras APIs externa
 | `.promote` | `@usuario` | Da admin |
 | `.demote` | `@usuario` | Quita admin |
 
+### 🎮 Juegos
+| Comando | Uso | Descripción |
+|---|---|---|
+| `.dado` | — | Tira un dado 🎲 |
+| `.moneda` | — | Cara o cruz 🪙 |
+| `.suerte` | `@usuario?` | % de suerte del día |
+| `.ppt` | `piedra/papel/tijera` | Juega contra el bot |
+| `.ship` | `@a @b` | Test de compatibilidad 💕 |
+| `.top` | `<tema>` | Top 5 al azar del grupo (solo grupos) |
+
+### 👑 Owner (solo el dueño)
+| Comando | Uso | Descripción |
+|---|---|---|
+| `.self` | — | Solo el dueño usa el bot |
+| `.public` | — | Todos pueden usar el bot |
+| `.setprefix` | `<símbolo>` | Cambia el prefijo (en memoria) |
+| `.setbotname` | `<nombre>` | Cambia el nombre del bot (en memoria) |
+| `.plugins` | — | Lista los plugins cargados |
+| `.join` | `<enlace>` | El bot se une a un grupo |
+| `.leave` | — | El bot sale del grupo |
+| `.restart` | — | Reinicia el bot (con PM2/panel vuelve solo) |
+
 ---
 
 ## ➕ CÓMO AGREGAR PLUGINS (tus propios comandos)
@@ -463,7 +491,9 @@ plugins/
 ├── 📂 busqueda/      → lyrics, pinterest…
 ├── 📂 stalk/         → github, tiktok…
 ├── 📂 herramientas/  → translate, weather, font…
-└── 📂 grupo/         → hidetag, kick, promote…
+├── 📂 juegos/        → dado, moneda, suerte, ppt, ship, top…
+├── 📂 grupo/         → hidetag, kick, promote…
+└── 📂 owner/         → self, public, setprefix, restart… (solo dueño 👑)
 ```
 
 - **Cada CARPETA es un grupo de comandos.** Es solo para que tú te ordenes.
@@ -741,8 +771,12 @@ BaseBot/
 │   │   └── stalk.js       → github, tiktok, threads
 │   ├── 📂 herramientas/
 │   │   └── tools.js       → translate, weather, font, ssweb…
-│   └── 📂 grupo/
-│       └── group.js       → hidetag, kick, promote, demote, link
+│   ├── 📂 juegos/
+│   │   └── juegos.js      → dado, moneda, suerte, ppt, ship, top
+│   ├── 📂 grupo/
+│   │   └── group.js       → hidetag, kick, promote, demote, link
+│   └── 📂 owner/
+│       └── owner.js       → self, public, setprefix, join, restart…
 └── 📂 session/          → (se crea sola) Sesión de WhatsApp ⚠️ NO LA COMPARTAS
 ```
 

@@ -51,6 +51,14 @@ module.exports = {
   autoRead: true,          // true = marca como leídos los mensajes con comandos (palomitas azules)
 
   // ──────────────────────────────────────────────
+  // 🎉 BIENVENIDA / DESPEDIDA EN GRUPOS
+  // ──────────────────────────────────────────────
+  welcome: true,           // true = el bot saluda cuando alguien entra o sale del grupo
+  // Placeholders: @user (mención)  {group} (nombre del grupo)  {count} (nº de miembros)
+  welcomeMsg: '👋 ¡Bienvenido/a @user a *{group}*! 🎉\nAhora somos *{count}* miembros.',
+  goodbyeMsg: '👋 @user salió del grupo. ¡Hasta pronto!',
+
+  // ──────────────────────────────────────────────
   // 💬 MENSAJES PERSONALIZABLES
   // ──────────────────────────────────────────────
   mess: {
@@ -115,7 +123,9 @@ module.exports = {
       busqueda:     { name: 'Búsquedas',               icon: '🔍' },
       stalk:        { name: 'Stalk',                   icon: '👤' },
       herramientas: { name: 'Herramientas',            icon: '🛠️' },
-      grupo:        { name: 'Grupo',                   icon: '👥' }
+      juegos:       { name: 'Juegos',                  icon: '🎮' },
+      grupo:        { name: 'Grupo',                   icon: '👥' },
+      owner:        { name: 'Solo Owner',              icon: '👑' }
     }
   }
 }

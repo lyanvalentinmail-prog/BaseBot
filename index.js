@@ -228,6 +228,34 @@ async function startBot() {
     }
   })
 
+  // ── 🎉 Bienvenida / despedida cuando alguien entra o sale ──
+  //    Se activa/desactiva y se personaliza en config.js
+  sock.ev.on('group-participants.update', async (update) => {
+    if (!config.welcome) return
+    try {
+      const { id, participants, action } = update
+      if (action !== 'add' && action !== 'remove') return
+
+      const metadata = await sock.groupMetadata(id).catch(() => null)
+      const data = {
+        group: metadata?.subject || 'el grupo',
+        count: metadata?.participants?.length ?? '?'
+      }
+
+      for (const user of participants) {
+        const template = action === 'add' ? config.welcomeMsg : config.goodbyeMsg
+        if (!template) continue
+        const text = String(template)
+          .replace(/@user|\{user\}/g, `@${user.split('@')[0]}`)
+          .replace(/\{group\}/g, data.group)
+          .replace(/\{count\}/g, String(data.count))
+        await sock.sendMessage(id, { text, mentions: [user] }).catch(() => {})
+      }
+    } catch (e) {
+      console.error('Error en bienvenida/despedida:', e)
+    }
+  })
+
   return sock
 }
 
