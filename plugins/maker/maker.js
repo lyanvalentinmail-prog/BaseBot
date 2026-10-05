@@ -10,10 +10,10 @@
 //   Los dos últimos aceptan imagen CITADA (el bot la sube a internet).
 // ═══════════════════════════════════════════════════════════════════
 
-const { mediaCommand, usageMsg } = require('../lib/commands')
-const { akari, sendResult } = require('../lib/akari')
-const { uploadBuffer } = require('../lib/upload')
-const config = require('../config')
+const { mediaCommand, usageMsg } = require('../../lib/commands')
+const { akari, sendResult } = require('../../lib/akari')
+const { uploadBuffer } = require('../../lib/upload')
+const config = require('../../config')
 
 module.exports = [
 

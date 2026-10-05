@@ -61,5 +61,61 @@ module.exports = {
     botAdmin: '🤖 Necesito ser *administrador* del grupo para hacer eso.',
     error: '❌ *Ocurrió un error inesperado.* Inténtalo de nuevo más tarde.',
     apiError: '❌ *La API no respondió correctamente.* Verifica tu API key o inténtalo luego.'
+  },
+
+  // ──────────────────────────────────────────────
+  // 🎨 ESTILO DEL MENÚ  (cámbialo a tu gusto)
+  // ──────────────────────────────────────────────
+  //  Usa {placeholders}: se reemplazan solos por la info real.
+  //
+  //  Disponibles en el HEADER y FOOTER:
+  //    {botName}  {user}  {uptime}  {commands}  {prefix}
+  //    {prefixes} {owner} {api}     {wm}        {date}  {time}
+  //  Disponibles en catTop/catCmd/catBottom (además de los de arriba):
+  //    {icon}  {name}  {tag}  {help}
+  //
+  //  👉 Así se ve tu menú actual:
+  //  ╭═══ ≪ *𝘽𝙖𝙨𝙚𝘽𝙤𝙩 ✦* ≫ ═══╮
+  //  │ 👤 *Hola:* Leonel ...
+  //  ╰═══════════════════╯
+  //  ╭─「 🤖 *Inteligencia Artificial* 」
+  //  │ ◦ .gemini <texto>
+  //  ╰──────────────
+  // ──────────────────────────────────────────────
+  menu: {
+    // Encabezado del menú
+    header: `╭═══ ≪ *{botName}* ≫ ═══╮
+│
+│ 👤 *Hola:* {user}
+│ ⏱️ *Activo:* {uptime}
+│ 📚 *Comandos:* {commands}
+│ 🔑 *Prefijo:* {prefixes}
+│ 👑 *Creador:* {owner}
+│ 🌙 *API:* {api}
+│
+╰═══════════════════╯`,
+
+    // Línea de arriba de cada categoría
+    catTop: '╭─「 {icon} *{name}* 」',
+    // Cada línea de comando
+    catCmd: '│ ◦ {prefix}{help}',
+    // Línea de cierre de cada categoría
+    catBottom: '╰──────────────',
+    // Final del menú
+    footer: '> {wm}',
+
+    // Nombre, icono y ORDEN de las categorías (agréguelas al crear grupos nuevos)
+    // La "etiqueta" (izquierda) es la que usan los plugins en:  h.tags = ['etiqueta']
+    tags: {
+      principal:    { name: 'Principal',               icon: '🏠' },
+      ia:           { name: 'Inteligencia Artificial', icon: '🤖' },
+      descargas:    { name: 'Descargas',               icon: '📥' },
+      imagen:       { name: 'Imágenes',                icon: '🖼️' },
+      maker:        { name: 'Creadores',               icon: '🎨' },
+      busqueda:     { name: 'Búsquedas',               icon: '🔍' },
+      stalk:        { name: 'Stalk',                   icon: '👤' },
+      herramientas: { name: 'Herramientas',            icon: '🛠️' },
+      grupo:        { name: 'Grupo',                   icon: '👥' }
+    }
   }
 }

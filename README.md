@@ -23,11 +23,12 @@
 8. [⚙️ PERSONALIZACIÓN (config.js)](#️-personalización-configjs)
 9. [🌙 API KEY — qué es y cómo conseguirla](#-api-key--qué-es-y-cómo-conseguirla)
 10. [📚 LISTA COMPLETA DE COMANDOS](#-lista-completa-de-comandos)
-11. [➕ CÓMO AGREGAR TUS PROPIOS COMANDOS](#-cómo-agregar-tus-propios-comandos)
-12. [🗂️ Estructura del proyecto](#️-estructura-del-proyecto)
-13. [🔧 SOLUCIÓN DE ERRORES](#-solución-de-errores)
-14. [❓ Preguntas frecuentes](#-preguntas-frecuentes)
-15. [⚠️ Aviso importante](#️-aviso-importante)
+11. [➕ CÓMO AGREGAR PLUGINS (tus propios comandos)](#-cómo-agregar-plugins-tus-propios-comandos)
+12. [🎨 CAMBIAR EL ESTILO DEL MENÚ](#-cambiar-el-estilo-del-menú)
+13. [🗂️ Estructura del proyecto](#️-estructura-del-proyecto)
+14. [🔧 SOLUCIÓN DE ERRORES](#-solución-de-errores)
+15. [❓ Preguntas frecuentes](#-preguntas-frecuentes)
+16. [⚠️ Aviso importante](#️-aviso-importante)
 
 ---
 
@@ -310,6 +311,7 @@ npm start
 | `showErrors` | Muestra detalles técnicos de errores | `true` |
 | `autoRead` | Marca los comandos como leídos (✓✓ azul) | `true` |
 | `mess.*` | Todos los textos del bot (espera, errores, permisos…) | ¡Tradúcelos o cámbialos a tu estilo! |
+| `menu.*` | 🎨 **Estilo completo del `.menu`** (encabezado, categorías, iconos, orden) | Ver [🎨 Cambiar el estilo del menú](#-cambiar-el-estilo-del-menú) |
 
 > 🎨 **Tip:** puedes poner emojis y letras especiales en `botName`, `wm` y los mensajes. Usa el comando `.font tu texto` del propio bot para generar letras bonitas.
 
@@ -445,15 +447,37 @@ El bot **NO necesita más keys**, pero si algún día agregas otras APIs externa
 
 ---
 
-## ➕ CÓMO AGREGAR TUS PROPIOS COMANDOS
+## ➕ CÓMO AGREGAR PLUGINS (tus propios comandos)
 
-El bot está pensado para ser una **BASE**. Tienes 3 caminos:
+El bot está pensado para ser una **BASE**. Crear un comando nuevo = **crear un archivo `.js` dentro de la carpeta del grupo** que corresponda.
 
-### 🅰️ Con las fábricas (¡UNA línea por comando!)
-Crea un archivo nuevo en la carpeta `plugins/` (ej: `plugins/miscomandos.js`):
+### 📁 ¿Cómo están organizados los plugins?
+
+```
+plugins/
+├── 📂 principal/     → menu, ping, owner…
+├── 📂 ia/            → gemini, chatgpt, deepseek, novaai…
+├── 📂 descargas/     → tiktok, ytmp3, terabox…
+├── 📂 imagen/        → wallpaper, removebg…
+├── 📂 maker/         → brat, fakenote, iqc…
+├── 📂 busqueda/      → lyrics, pinterest…
+├── 📂 stalk/         → github, tiktok…
+├── 📂 herramientas/  → translate, weather, font…
+└── 📂 grupo/         → hidetag, kick, promote…
+```
+
+- **Cada CARPETA es un grupo de comandos.** Es solo para que tú te ordenes.
+- **Cada ARCHIVO `.js` dentro puede tener 1 o varios comandos.**
+- ¿En qué apartado del `.menu` aparece? Eso lo decide `h.tags = ['...']`, no la carpeta — pero lo ideal es que carpeta y tag coincidan.
+- 🔥 **Todo se recarga SOLO:** al crear/editar/borrar cualquier archivo el bot lo detecta y recarga sin reiniciar.
+
+### 🅰️ Ejemplo: agregar un comando con las fábricas (¡1 línea!)
+
+1. Crea el archivo `plugins/ia/llama.js`:
+2. Pega esto (🏷️ ojo: desde una subcarpeta se usa `../../lib/`):
 
 ```js
-const { aiCommand, mediaCommand, textCommand } = require('../lib/commands')
+const { aiCommand, mediaCommand, textCommand } = require('../../lib/commands')
 
 module.exports = [
 
@@ -462,7 +486,7 @@ module.exports = [
 
   // 📥 Nuevo descargador (endpoint que devuelve archivos con ?url=)
   mediaCommand('kwai', '/api/downloader/kwai', {
-    param: 'url', prefer: 'video',
+    param: 'url', prefer: 'video', tag: 'descargas',
     ej: 'https://kwai.com/video/123'
   }),
 
@@ -474,25 +498,31 @@ module.exports = [
 ]
 ```
 
-**Guardas el archivo y el bot lo carga SOLO (recarga en caliente 🔥)** y aparece en `.menu`.
+3. Guarda el archivo → verás `♻️ Cambio detectado… ✅` en la consola → ya funciona `.llama` y aparece en `.menu`. ✨
 
 **Opciones de las fábricas:**
-- `param` → nombre del parámetro de la API (`'url'`, `'q'`, `'query'`, `'text'`, `'user'`, `'pkg'`…). Pon `null` si no pide nada.
-- `paramName` → cómo se ve en la ayuda (`'<url>'`, `'<búsqueda>'`…)
-- `prefer` → `'video'` | `'audio'` | `'image'` | `'document'` | `'sticker'`
-- `alias` → otros nombres: `alias: ['tt', 'tiktokdl']`
-- `tag` → categoría del menú: `'descargas'`, `'ia'`, `'imagen'`, `'maker'`, `'busqueda'`, `'stalk'`, `'herramientas'`, `'grupo'`
+| Opción | Significado |
+|---|---|
+| `param` | Parámetro que pide la API (`'url'`, `'q'`, `'query'`, `'text'`, `'user'`, `'pkg'`…). `null` = no pide texto |
+| `paramName` | Cómo se ve en la ayuda (`'<url>'`, `'<búsqueda>'`…) |
+| `prefer` | `'video'` \| `'audio'` \| `'image'` \| `'document'` \| `'sticker'` |
+| `alias` | Otros nombres del comando: `alias: ['tt', 'tiktokdl']` |
+| `tag` | Categoría del menú (`'ia'`, `'descargas'`, `'imagen'`, `'maker'`, `'busqueda'`, `'stalk'`, `'herramientas'`, `'grupo'`, `'principal'`) |
+| `ej` | Ejemplo que sale si el usuario no escribe nada |
 
-### 🅱️ Comando manual (control total)
+### 🅱️ Ejemplo: comando manual (control total)
+
+Archivo `plugins/herramientas/saludar.js`:
+
 ```js
-const { akari, sendResult, pickAnswer } = require('../lib/akari')
+const { akari, sendResult, pickAnswer } = require('../../lib/akari')
 
 let h = async (m, { conn, text, args, usedPrefix, command, isOwner }) => {
   if (!text) return m.reply(`❌ Uso: ${usedPrefix}${command} <texto>`)
 
   await m.react('⏳')                       // reacción de "cargando"
 
-  // Llamar a la API (la key se agrega sola):
+  // Llamar a la API de Akari (la key se agrega sola):
   const res = await akari('/api/ai/gemini', { text })
 
   // Opción 1: enviar respuesta automática (detecta imágenes/videos/texto)
@@ -501,9 +531,9 @@ let h = async (m, { conn, text, args, usedPrefix, command, isOwner }) => {
   // Opción 2 (solo texto de IA):
   // if (res.type === 'json') await m.reply(pickAnswer(res.data))
 }
-h.help = ['micomando <texto>']   // aparece en el menú
-h.tags = ['herramientas']        // categoría
-h.command = ['micomando', 'mc']  // nombres del comando
+h.help = ['saludar <texto>']     // cómo aparece en el menú
+h.tags = ['herramientas']        // categoría del menú
+h.command = ['saludar', 'hola']  // nombres que activan el comando
 // h.rowner = true               // solo dueño (opcional)
 // h.group = true                // solo grupos (opcional)
 // h.admin = true                // solo admins (opcional)
@@ -511,10 +541,12 @@ h.command = ['micomando', 'mc']  // nombres del comando
 module.exports = h
 ```
 
-### 🅲️ Comando SIN API (100% WhatsApp con Baileys)
+### 🅲️ Ejemplo: comando SIN API (100% WhatsApp con Baileys)
+
+Archivo `plugins/grupo/miembros.js`:
+
 ```js
 let h = async (m, { conn, participants }) => {
-  // Ejemplo: contar miembros del grupo
   await m.reply(`👥 Este grupo tiene *${participants.length}* miembros.`)
 }
 h.help = ['miembros']
@@ -523,6 +555,28 @@ h.command = ['miembros']
 h.group = true
 module.exports = h
 ```
+
+### 🆕 ¿Quieres crear un GRUPO nuevo? (ej: "Juegos")
+
+1. Crea la carpeta: `plugins/juegos/`
+2. Crea un archivo dentro, ej: `plugins/juegos/suerte.js`, con `h.tags = ['juegos']`:
+   ```js
+   let h = async (m) => {
+     await m.reply(`🍀 Tu suerte de hoy: ${Math.floor(Math.random() * 101)}%`)
+   }
+   h.help = ['suerte']
+   h.tags = ['juegos']
+   h.command = ['suerte']
+   module.exports = h
+   ```
+3. Para que en el menú salga con nombre e icono bonitos, agrégalo en `config.js` → `menu.tags`:
+   ```js
+   tags: {
+     // ...las que ya existen...
+     juegos: { name: 'Juegos', icon: '🎮' }
+   }
+   ```
+   > Si no lo agregas, igual funciona: el menú lo mostrará con el icono genérico ✨.
 
 **Cosas útiles que tienes dentro de cualquier comando:**
 | Variable | Contenido |
@@ -542,31 +596,157 @@ module.exports = h
 
 ---
 
+## 🎨 CAMBIAR EL ESTILO DEL MENÚ
+
+El **estilo completo del `.menu` se edita desde `config.js`**, sección **`menu`** — no toques código de plugins para personalizarlo.
+
+### 👀 Así se ve tu menú actual
+
+```
+╭═══ ≪ *𝘽𝙖𝙨𝙚𝘽𝙤𝙩 ✦* ≫ ═══╮
+│
+│ 👤 *Hola:* Leonel
+│ ⏱️ *Activo:* 0h 12m 5s
+│ 📚 *Comandos:* 128
+│ 🔑 *Prefijo:* . # /
+│ 👑 *Creador:* Tu Nombre
+│ 🌙 *API:* Akari 🌙
+│
+╰═══════════════════╯
+
+╭─「 🤖 *Inteligencia Artificial* 」
+│ ◦ .chatgpt <texto>
+│ ◦ .deepseek <texto>
+│ ◦ .gemini <texto>
+│ ◦ .novaai <texto>
+╰──────────────
+
+╭─「 📥 *Descargas* 」
+│ ◦ .apkpure <paquete>
+...
+```
+
+### ✏️ Las piezas que puedes cambiar (en `config.js`)
+
+```js
+menu: {
+  header: `╭═══ ≪ *{botName}* ≫ ═══╮      ← ENCABEZADO
+│ ...                                   (usa {placeholders})
+╰═══════════════════╯`,
+
+  catTop: '╭─「 {icon} *{name}* 」',       // ← título de cada categoría
+  catCmd: '│ ◦ {prefix}{help}',            // ← línea de cada comando
+  catBottom: '╰──────────────',            // ← cierre de cada categoría
+  footer: '> {wm}',                        // ← FINAL del menú
+
+  tags: { ... }                            // ← nombre + icono + ORDEN de categorías
+}
+```
+
+### 🏷️ Placeholders disponibles
+
+| Placeholder | Se reemplaza por… | Dónde |
+|---|---|---|
+| `{botName}` | Nombre del bot (config) | header / footer |
+| `{user}` | Nombre de quien pidió el menú | header / footer |
+| `{uptime}` | Tiempo activo (`2h 5m 3s`) | header / footer |
+| `{commands}` | Nº total de comandos | header / footer |
+| `{prefix}` | Prefijo principal (el primero) | líneas de comandos |
+| `{prefixes}` | Todos los prefijos (`. # /`) | header |
+| `{owner}` | Nombre del creador | header / footer |
+| `{api}` | Nombre de la API | header / footer |
+| `{wm}` | Marca de agua | header / footer |
+| `{date}` / `{time}` | Fecha y hora actuales | header / footer |
+| `{icon}` | Icono de la categoría | catTop / catCmd |
+| `{name}` | Nombre de la categoría | catTop / catCmd / catBottom |
+| `{tag}` | Etiqueta interna (`"ia"`, `"grupo"`…) | catTop / catCmd |
+| `{help}` | Texto de ayuda del comando (`gemini <texto>`) | catCmd |
+
+### 🌟 Ejemplos de estilos listos para copiar
+
+**Estilo minimalista:**
+```js
+menu: {
+  header: `┏━━『 {botName} 』━━┓
+┃ 👤 {user}   ⏱️ {uptime}
+┃ 📚 {commands} comandos   🔑 {prefix}
+┗━━━━━━━━━━━━┛`,
+  catTop: '┏━『 {icon} {name} 』',
+  catCmd: '┃ ▹ {prefix}{help}',
+  catBottom: '┗━━━━━━━━━━━',
+  footer: '_Hecho con ❤️_',
+  tags: { /* …igual que antes… */ }
+}
+```
+
+**Estilo simple sin bordes:**
+```js
+menu: {
+  header: `✦ ━━━ *{botName}* ━━━ ✦
+Hola *{user}* 👋
+Tengo *{commands}* comandos • Activo {uptime}`,
+  catTop: '\n{icon} *— {name} —*',
+  catCmd: '   ◦ {prefix}{help}',
+  catBottom: '',
+  footer: '━━━━━━━━━━\n{wm}',
+  tags: { /* …igual que antes… */ }
+}
+```
+
+### 🔁 ¿Cómo reordenar / renombrar las categorías?
+
+En `config.js` → `menu.tags`, cambia el orden de las líneas o edita nombres e iconos:
+
+```js
+tags: {
+  descargas:    { name: 'DESCARGAS 🎬', icon: '📥' },   // 👈 primero las descargas
+  ia:           { name: 'IA ✨',        icon: '🤖' },
+  principal:    { name: 'Principal',    icon: '🏠' },
+  // …el resto
+}
+```
+
+> ⚠️ Los cambios en `config.js` **sí requieren reiniciar el bot** (`CTRL + C` y `npm start`). Los cambios en archivos de `plugins/` se recargan solos. 🔥
+
+---
+
 ## 🗂️ Estructura del proyecto
 
 ```
 BaseBot/
 ├── 📄 index.js          → Arranque: conexión, sesión, carga de plugins
 ├── 📄 handler.js        → Lee mensajes y ejecuta comandos
-├── 📄 config.js         → ⭐ TODA LA PERSONALIZACIÓN AQUÍ
+├── 📄 config.js         → ⭐ TODA LA PERSONALIZACIÓN AQUÍ (incluye el ESTILO DEL MENÚ)
 ├── 📄 package.json      → Dependencias del proyecto
 ├── 📂 lib/
 │   ├── akari.js         → Cliente de la API + formateo/envío inteligente
 │   ├── commands.js      → Fábricas: crea comandos con 1 línea
 │   ├── serialize.js     → Convierte mensajes en objetos fáciles (m.reply…)
 │   └── upload.js        → Sube imágenes citadas a internet (catbox)
-├── 📂 plugins/          → 🔥 Cada archivo = comandos (recarga automática)
-│   ├── main.js          → menu, ping, owner, apitest…
-│   ├── ai.js            → gemini, chatgpt, deepseek, novaai
-│   ├── downloader.js    → tiktok, ytmp3, terabox, stickers…
-│   ├── image.js         → wallpaper, removebg, bluearchive…
-│   ├── maker.js         → brat, fakenote, iqc
-│   ├── search.js        → lyrics, pinterest, spotify, aptoide
-│   ├── stalk.js         → github, tiktok, threads
-│   ├── tools.js         → translate, weather, font, ssweb…
-│   └── group.js         → hidetag, kick, promote, demote, link
+├── 📂 plugins/          → 🔥 Cada CARPETA = un grupo de comandos
+│   │                      (recarga automática al editar/crear archivos)
+│   ├── 📂 principal/
+│   │   └── main.js        → menu, ping, uptime, owner, id, apitest
+│   ├── 📂 ia/
+│   │   └── ai.js          → gemini, chatgpt, deepseek, novaai
+│   ├── 📂 descargas/
+│   │   └── downloader.js  → tiktok, ytmp3, terabox, stickers…
+│   ├── 📂 imagen/
+│   │   └── image.js       → wallpaper, removebg, bluearchive…
+│   ├── 📂 maker/
+│   │   └── maker.js       → brat, fakenote, iqc
+│   ├── 📂 busqueda/
+│   │   └── search.js      → lyrics, pinterest, spotify, aptoide
+│   ├── 📂 stalk/
+│   │   └── stalk.js       → github, tiktok, threads
+│   ├── 📂 herramientas/
+│   │   └── tools.js       → translate, weather, font, ssweb…
+│   └── 📂 grupo/
+│       └── group.js       → hidetag, kick, promote, demote, link
 └── 📂 session/          → (se crea sola) Sesión de WhatsApp ⚠️ NO LA COMPARTAS
 ```
+
+> 📁 **Puedes crear carpetas y archivos nuevos dentro de `plugins/`** (ej: `plugins/juegos/dados.js`) y el bot los cargará automáticamente. Ver [➕ CÓMO AGREGAR PLUGINS](#-cómo-agregar-plugins-tus-propios-comandos).
 
 ---
 

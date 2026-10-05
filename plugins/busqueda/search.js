@@ -9,7 +9,7 @@
 //     spotify   → busca canciones en Spotify
 // ═══════════════════════════════════════════════════════════════════
 
-const { textCommand, mediaCommand } = require('../lib/commands')
+const { textCommand, mediaCommand } = require('../../lib/commands')
 
 module.exports = [
   textCommand('aptoide', '/api/search/aptoide', {

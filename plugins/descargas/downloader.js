@@ -14,9 +14,9 @@
 //   👉 PARA AGREGAR UN NUEVO DESCARGADOR copia una línea y edítala.
 // ═══════════════════════════════════════════════════════════════════
 
-const { mediaCommand, usageMsg } = require('../lib/commands')
-const { akari, unwrap, isApiError, mediaList, formatResult } = require('../lib/akari')
-const config = require('../config')
+const { mediaCommand, usageMsg } = require('../../lib/commands')
+const { akari, unwrap, isApiError, mediaList, formatResult } = require('../../lib/akari')
+const config = require('../../config')
 
 module.exports = [
 

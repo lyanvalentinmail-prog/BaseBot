@@ -8,7 +8,7 @@
 //     tiktokstalk   → info de un perfil de TikTok
 // ═══════════════════════════════════════════════════════════════════
 
-const { textCommand } = require('../lib/commands')
+const { textCommand } = require('../../lib/commands')
 
 module.exports = [
   textCommand('githubstalk', '/api/stalk/github', {

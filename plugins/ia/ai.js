@@ -8,7 +8,7 @@
 //      aiCommand('nombredelcomando', '/api/ai/endpoint-de-la-api')
 // ═══════════════════════════════════════════════════════════════════
 
-const { aiCommand } = require('../lib/commands')
+const { aiCommand } = require('../../lib/commands')
 
 module.exports = [
   aiCommand('gemini', '/api/ai/gemini', {

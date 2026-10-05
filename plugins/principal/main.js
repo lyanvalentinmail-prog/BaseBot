@@ -1,7 +1,10 @@
 // ═══════════════════════════════════════════════════════════════════
 //   🏠 COMANDOS PRINCIPALES
 //   ─────────────────────────────────────────────────────────────────
-//   Aquí ves cómo se escribe un comando MANUAL (sin fábricas):
+//   El MENÚ se genera SOLO con los plugins cargados y toma su
+//   ESTILO de config.js → sección "menu". ¡Edítalo desde ahí! 🎨
+//
+//   Aquí también ves cómo se escribe un comando MANUAL (sin fábricas):
 //
 //   let h = async (m, { conn, text, args, command, usedPrefix }) => { … }
 //   h.help = ['menu']          → cómo aparece en el menú
@@ -16,10 +19,10 @@
 //     h.botAdmin = true → el bot debe ser admin
 // ═══════════════════════════════════════════════════════════════════
 
-const config = require('../config')
-const { akari, pickAnswer } = require('../lib/akari')
+const config = require('../../config')
+const { akari, pickAnswer } = require('../../lib/akari')
 
-// ⏱️ Función para mostrar el tiempo activo
+// ⏱️ Tiempo activo del proceso
 function uptime() {
   const s = Math.floor(process.uptime())
   const h = Math.floor(s / 3600)
@@ -28,62 +31,69 @@ function uptime() {
   return `${h}h ${mi}m ${se}s`
 }
 
-// Nombres "bonitos" para las categorías del menú
-const TAG_NAMES = {
-  principal: '🏠 Principal',
-  ia: '🤖 Inteligencia Artificial',
-  descargas: '📥 Descargas',
-  imagen: '🖼️ Imágenes',
-  maker: '🎨 Creadores',
-  busqueda: '🔍 Búsquedas',
-  stalk: '👤 Stalk',
-  herramientas: '🛠️ Herramientas',
-  grupo: '👥 Grupo'
+// 🔁 Reemplaza {placeholders} por sus valores reales
+function fill(template, data) {
+  return String(template ?? '').replace(/\{(\w+)\}/g, (_, k) => (data[k] !== undefined ? String(data[k]) : ''))
 }
 
 // ─────────────────────────────────────────────
-// 📜 MENÚ — se genera SOLO a partir de los plugins
+// 📜 MENÚ — estilo 100% configurable en config.js
 // ─────────────────────────────────────────────
 let menu = async (m, { conn, usedPrefix }) => {
   const firstPrefix = Array.isArray(config.prefix) ? config.prefix[0] : config.prefix
+  const st = config.menu || {}
 
-  // Recolectar comandos de todos los plugins
+  // 1️⃣ Recolectar comandos de todos los plugins, agrupados por su tag
   const byTag = {}
   let total = 0
   for (const plugin of Object.values(global.plugins || {})) {
     for (const p of (Array.isArray(plugin) ? plugin : [plugin])) {
-      if (!p?.help?.length || !p?.tags?.length) continue
-      const tag = p.tags[0]
+      if (!p?.help?.length) continue
+      const tag = p.tags?.[0] || 'otros'
       if (!byTag[tag]) byTag[tag] = []
-      byTag[tag].push(p.help[0])
+      for (const line of (Array.isArray(p.help) ? p.help : [p.help])) byTag[tag].push(line)
       total += (Array.isArray(p.command) ? p.command : [p.command]).length
     }
   }
+  for (const t of Object.keys(byTag)) byTag[t].sort()
 
-  let text = `╭═══ ≪ *${config.botName}* ≫ ═══╮
-│
-│ 👤 *Hola:* ${m.pushName}
-│ ⏱️ *Activo:* ${uptime()}
-│ 📚 *Comandos:* ${total}
-│ 🔑 *Prefijo:* ${(Array.isArray(config.prefix) ? config.prefix.join(' ') : config.prefix)}
-│ 👑 *Creador:* ${config.ownerName}
-│ 🌙 *API:* Akari
-│
-╰═══════════════════╯`
-
-  // Ordenar categorías según TAG_NAMES y luego las demás
-  const orderedTags = [
-    ...Object.keys(TAG_NAMES).filter(t => byTag[t]),
-    ...Object.keys(byTag).filter(t => !TAG_NAMES[t])
-  ]
-
-  for (const tag of orderedTags) {
-    const title = TAG_NAMES[tag] || `✨ ${tag}`
-    const lines = byTag[tag].sort().map(h => `│ ◦ ${firstPrefix}${h}`)
-    text += `\n\n╭─「 ${title} 」\n${lines.join('\n')}\n╰──────────────`
+  // 2️⃣ Datos disponibles para los {placeholders} del estilo
+  const data = {
+    botName: config.botName,
+    user: m.pushName,
+    uptime: uptime(),
+    commands: total,
+    prefix: firstPrefix,                                           // prefijo principal
+    prefixes: Array.isArray(config.prefix) ? config.prefix.join(' ') : config.prefix, // todos
+    owner: config.ownerName,
+    api: 'Akari 🌙',
+    wm: config.wm,
+    date: new Date().toLocaleDateString('es'),
+    time: new Date().toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit' })
   }
 
-  text += `\n\n> ${config.wm}`
+  // 3️⃣ Orden de las categorías: primero las de config.menu.tags, luego las demás
+  const tagStyles = st.tags || {}
+  const ordered = [
+    ...Object.keys(tagStyles).filter(t => byTag[t]),
+    ...Object.keys(byTag).filter(t => !tagStyles[t])
+  ]
+
+  // 4️⃣ Armar el texto: header + categorías + footer
+  let text = fill(st.header ?? '╭─〔 *{botName}* 〕', data)
+
+  for (const tag of ordered) {
+    const info = tagStyles[tag] || { name: tag.charAt(0).toUpperCase() + tag.slice(1), icon: '✨' }
+    const catData = { ...data, name: info.name, icon: info.icon, tag }
+    text += '\n\n' + fill(st.catTop ?? '╭─「 {icon} *{name}* 」', catData)
+    for (const line of byTag[tag]) {
+      text += '\n' + fill(st.catCmd ?? '│ ◦ {prefix}{help}', { ...catData, help: line })
+    }
+    text += '\n' + fill(st.catBottom ?? '╰──────────────', catData)
+  }
+
+  text += '\n\n' + fill(st.footer ?? '> {wm}', data)
+
   await m.reply(text)
 }
 menu.help = ['menu']
@@ -94,8 +104,7 @@ menu.command = ['menu', 'help', 'ayuda', 'comandos']
 // 🏓 PING — velocidad de respuesta
 // ─────────────────────────────────────────────
 let ping = async (m, { conn }) => {
-  const start = Date.now()
-  const latency = start - (Number(m.messageTimestamp) * 1000)
+  const latency = Date.now() - (Number(m.messageTimestamp) * 1000)
   const sent = await m.reply('🏓 *Pong!*')
   await conn.sendMessage(m.chat, {
     text: `🏓 *Pong!*\n▸ 📶 Velocidad: *${Math.max(latency, 0)} ms*\n▸ ⏱️ Activo: *${uptime()}*`,

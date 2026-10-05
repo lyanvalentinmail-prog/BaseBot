@@ -13,9 +13,9 @@
 //     wainfo    → información de un grupo de WhatsApp por su enlace
 // ═══════════════════════════════════════════════════════════════════
 
-const { textCommand, mediaCommand, usageMsg } = require('../lib/commands')
-const { akari, pickAnswer, isApiError, formatResult, unwrap } = require('../lib/akari')
-const config = require('../config')
+const { textCommand, mediaCommand, usageMsg } = require('../../lib/commands')
+const { akari, pickAnswer, isApiError, formatResult, unwrap } = require('../../lib/akari')
+const config = require('../../config')
 
 module.exports = [
 

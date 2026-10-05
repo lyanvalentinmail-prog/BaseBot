@@ -10,10 +10,10 @@
 //     (acepta URL o una imagen CITADA: el bot la sube por ti)
 // ═══════════════════════════════════════════════════════════════════
 
-const { mediaCommand, usageMsg } = require('../lib/commands')
-const { akari, sendResult } = require('../lib/akari')
-const { uploadBuffer } = require('../lib/upload')
-const config = require('../config')
+const { mediaCommand, usageMsg } = require('../../lib/commands')
+const { akari, sendResult } = require('../../lib/akari')
+const { uploadBuffer } = require('../../lib/upload')
+const config = require('../../config')
 
 // Función reutilizable para comandos que aceptan URL o imagen citada
 function urlOrUploadCommand(command, endpoint, { desc, ej, alias = [] }) {

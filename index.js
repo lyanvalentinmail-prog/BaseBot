@@ -30,21 +30,46 @@ const logger = pino({ level: 'silent' })
 
 // ═════════════════════════════════════════════════════════════════
 // 🔌 CARGA DE PLUGINS (con recarga en caliente al editar)
+//    Lee TODAS las subcarpetas de /plugins — cada carpeta es un
+//    GRUPO de comandos: principal, ia, descargas, imagen, maker…
+//    Puedes crear carpetas nuevas con archivos .js dentro y el
+//    bot los cargará automáticamente. 🔥
 // ═════════════════════════════════════════════════════════════════
 global.plugins = {}
 const pluginsDir = path.join(__dirname, 'plugins')
 
+// Busca todos los archivos .js (recursivo: plugins/grupo/archivo.js)
+function findJsFiles(dir) {
+  const out = []
+  if (!fs.existsSync(dir)) return out
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name)
+    if (entry.isDirectory()) out.push(...findJsFiles(full))
+    else if (entry.isFile() && entry.name.endsWith('.js')) out.push(full)
+  }
+  return out
+}
+
+// Lista todas las carpetas dentro de /plugins (para vigilarlas)
+function findDirs(dir) {
+  const out = [dir]
+  if (!fs.existsSync(dir)) return out
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (entry.isDirectory()) out.push(...findDirs(path.join(dir, entry.name)))
+  }
+  return out
+}
+
 function loadAllPlugins() {
   if (!fs.existsSync(pluginsDir)) fs.mkdirSync(pluginsDir, { recursive: true })
-  const files = fs.readdirSync(pluginsDir).filter(f => f.endsWith('.js'))
   global.plugins = {}
-  for (const file of files) {
-    const filepath = path.join(pluginsDir, file)
+  for (const filepath of findJsFiles(pluginsDir)) {
+    const rel = path.relative(pluginsDir, filepath)
     try {
       delete require.cache[require.resolve(filepath)]
-      global.plugins[file] = require(filepath)
+      global.plugins[rel] = require(filepath)
     } catch (e) {
-      console.error(`⚠️  Error al cargar el plugin "${file}":`, e.message)
+      console.error(`⚠️  Error al cargar el plugin "${rel}":`, e.message)
     }
   }
 }
@@ -61,17 +86,34 @@ function countCommands() {
 
 loadAllPlugins()
 
-// Recarga automática cuando editas un archivo de /plugins
+// ♻️ Recarga automática al editar/crear/borrar plugins
+//    (vigila /plugins y todas sus subcarpetas)
+let watchers = []
 let reloadTimer = null
-fs.watch(pluginsDir, (event, filename) => {
-  if (!filename || !filename.endsWith('.js')) return
+
+function scheduleReload(reason) {
   clearTimeout(reloadTimer)
   reloadTimer = setTimeout(() => {
-    console.log(`♻️  Plugin modificado (${filename}) → recargando plugins…`)
+    console.log(`♻️  Cambio detectado en plugins (${reason}) → recargando…`)
     loadAllPlugins()
+    setupWatchers()
     console.log(`✅ ${countCommands()} comandos listos.`)
   }, 600)
-})
+}
+
+function setupWatchers() {
+  watchers.forEach(w => { try { w.close() } catch {} })
+  watchers = []
+  for (const dir of findDirs(pluginsDir)) {
+    try {
+      watchers.push(fs.watch(dir, (event, filename) => {
+        if (filename && !filename.endsWith('.js')) return
+        scheduleReload(filename || 'plugins')
+      }))
+    } catch {}
+  }
+}
+setupWatchers()
 
 // ═════════════════════════════════════════════════════════════════
 // 📱 CONEXIÓN CON WHATSAPP
