@@ -263,6 +263,11 @@ pairingNumber: '521234567890',   // 👈 OBLIGATORIO: tu número con código de 
 Al iniciar verás el código en consola. Luego en WhatsApp:
 **Ajustes → Dispositivos vinculados → Vincular un dispositivo → «Vincular con número de teléfono»** → escribes el código.
 
+> ⚠️ **Importante:**
+> - Escríbelo **SIN el guion** (8 caracteres seguidos, ej: `ABCD1234`)
+> - El código **expira en ~2 minutos**: si tardaste, reinicia el bot y usa el nuevo
+> - Debes escribirlo **en el WhatsApp del MISMO número** que pusiste en `pairingNumber`
+
 ### Método 2: Código QR
 ```js
 usePairingCode: false,
@@ -582,6 +587,7 @@ BaseBot/
 
 | Problema | Solución |
 |---|---|
+| **«Código incorrecto» / «No es válido» al vincular** | Revisa en este orden: 1️⃣ Escríbelo **SIN el guion**, 8 caracteres seguidos. 2️⃣ El código **expira en ~2 minutos** → reinicia el bot y usa el código **nuevo** enseguida. 3️⃣ Escríbelo **en el WhatsApp del mismo número** que pusiste en `pairingNumber` (si lo escribes en otra cuenta, siempre dirá "incorrecto"). 4️⃣ Revisa que el número en `config.js` esté bien (con código de país, sin `+` ni espacios). 5️⃣ Si nada funciona, usa el QR: `npm run qr` |
 | **No aparece el código de emparejamiento** | Verifica que `pairingNumber` tenga tu número **con código de país** (ej: `52` México, `54` Argentina, `34` España) SIN `+`. Espera ~5 segundos tras iniciar |
 | **Quiero QR y no código** | Pon `usePairingCode: false` en config.js o inicia con `npm run qr` |
 | **El QR se ve deforme/no se puede escanear** | Agranda la ventana de la terminal. En Termux pellizca para alejar. O usa el código de 8 dígitos |

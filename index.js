@@ -112,12 +112,16 @@ async function startBot() {
     } else {
       setTimeout(async () => {
         try {
-          let code = await sock.requestPairingCode(number)
-          code = code?.match(/.{1,4}/g)?.join('-') || code
+          const rawCode = await sock.requestPairingCode(number)
+          const pretty = rawCode?.match(/.{1,4}/g)?.join('-') || rawCode
           console.log('\n╔══════════════════════════════╗')
           console.log('   🔑 CÓDIGO DE VINCULACIÓN')
-          console.log(`        ➜  ${code}`)
+          console.log(`        ➜  ${pretty}`)
           console.log('╚══════════════════════════════╝')
+          console.log(`▸ Escríbelo en WhatsApp SIN el guion:  ${rawCode}`)
+          console.log(`▸ Debe escribirse en el WhatsApp del número: ${number}`)
+          console.log('▸ ⚠️  El código EXPIRA en ~2 minutos: úsalo enseguida.')
+          console.log('    Si falla, reinicia el bot (CTRL+C y npm start) y usa el código NUEVO.\n')
           console.log('Abre WhatsApp › Ajustes › Dispositivos vinculados ›')
           console.log('Vincular dispositivo › «Vincular con número de teléfono»\n')
         } catch (e) {
