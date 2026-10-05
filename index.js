@@ -23,7 +23,21 @@ const pino = require('pino')
 const qrcode = require('qrcode-terminal')
 const fs = require('fs')
 const path = require('path')
-const config = require('./config')
+
+// Carga la configuración con un mensaje de error AMIGABLE si está rota
+let config
+try {
+  config = require('./config')
+} catch (e) {
+  console.error('\n❌ ERROR en tu archivo config.js:')
+  console.error('   ' + (e.message || e))
+  console.error('\n👉 Probablemente se pegó texto raro al editarlo.')
+  console.error('   Para RESTAURARLO ejecuta:\n')
+  console.error('      git checkout -- config.js')
+  console.error('\n   Y vuelve a editarlo con cuidado (solo cambia lo que está entre comillas).\n')
+  process.exit(1)
+}
+
 const handler = require('./handler')
 
 const logger = pino({ level: 'silent' })
