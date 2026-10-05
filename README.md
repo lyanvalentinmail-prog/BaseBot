@@ -1,1 +1,942 @@
-# BaseBot
+<div align="center">
+
+# 🤖 BASEBOT ✦
+### Bot base de WhatsApp con Baileys + API Akari 🌙
+
+**Un bot completo, personalizable y fácil de usar: perfecto como BASE para crear tus propios bots de WhatsApp.**
+
+`Node.js` • `@whiskeysockets/baileys` • `apiakari.vercel.app`
+
+</div>
+
+---
+
+## 📑 ÍNDICE
+
+1. [✨ Características](#-características)
+2. [📋 Requisitos](#-requisitos)
+3. [📱 Instalación en TERMUX (Android)](#-instalación-en-termux-android)
+4. [💻 Instalación en WINDOWS](#-instalación-en-windows)
+5. [🖥️ Instalación en VPS (Ubuntu/Debian)](#️-instalación-en-vps-ubuntudebian)
+6. [📦 Instalación en PANELES de hosting](#-instalación-en-paneles-de-hosting-pterodactyl-etc)
+7. [🔑 VINCULAR el bot con WhatsApp](#-vincular-el-bot-con-whatsapp)
+8. [⚙️ PERSONALIZACIÓN (config.js)](#️-personalización-configjs)
+9. [🌙 API KEY — qué es y cómo conseguirla](#-api-key--qué-es-y-cómo-conseguirla)
+10. [📚 LISTA COMPLETA DE COMANDOS](#-lista-completa-de-comandos)
+11. [🌐 APIS EXTERNAS GRATIS (cómo conseguir cada key)](#-apis-externas-gratis-cómo-conseguir-cada-key)
+12. [➕ CÓMO AGREGAR PLUGINS (tus propios comandos)](#-cómo-agregar-plugins-tus-propios-comandos)
+13. [🎨 CAMBIAR EL ESTILO DEL MENÚ](#-cambiar-el-estilo-del-menú)
+14. [🗂️ Estructura del proyecto](#️-estructura-del-proyecto)
+15. [🔧 SOLUCIÓN DE ERRORES](#-solución-de-errores)
+16. [❓ Preguntas frecuentes](#-preguntas-frecuentes)
+17. [⚠️ Aviso importante](#️-aviso-importante)
+
+---
+
+## ✨ Características
+
+- ✅ **Conexión por código de 8 dígitos** (sin QR) o por **código QR**.
+- ✅ **45+ comandos listos** usando la API Akari ([apiakari.vercel.app](https://apiakari.vercel.app)):
+  - 🤖 **IA:** Gemini, ChatGPT, DeepSeek, NovaAI
+  - 📥 **Descargas:** TikTok, Facebook, Instagram, X/Twitter, Threads, Pinterest, Spotify, YouTube (MP3/MP4), Google Drive, Terabox, APKPure, Aptoide, stickers
+  - 🖼️ **Imágenes:** wallpapers, quitar fondo (removebg), imágenes random
+  - 🎨 **Creadores:** brat, nota falsa, iqc
+  - 🔍 **Búsquedas:** letras de canciones, Pinterest, Spotify, Aptoide
+  - 👤 **Stalk:** GitHub, TikTok, Threads
+  - 🛠️ **Herramientas:** traductor, clima, hora mundial, letras bonitas, capturas de web, captura de tweets, info de YouTube y de grupos de WhatsApp
+- ✅ **Comandos de grupo:** hidetag, link, kick, promote, demote
+- ✅ **🌐 APIs externas gratis** (de [freeapihub.com](https://freeapihub.com/apis)): películas, GIFs, fútbol en vivo, voz IA, países, anime, libros, clima…
+- ✅ **🎮 Juegos:** dado, moneda, suerte, piedra-papel-tijera, ship/top de compatibilidad
+- ✅ **👑 Comandos de owner:** modo self/público, cambiar prefijo/nombre, unirse a grupos, reiniciar…
+- ✅ **🎉 Bienvenida y despedida** automática en grupos (mensajes personalizables)
+- ✅ **Menú automático** que se genera solo con tus comandos, con **estilo editable desde `config.js`** 🎨
+- ✅ **Recarga en caliente:** edita un plugin y el bot lo recarga sin reiniciar 🔥
+- ✅ **Súper personalizable:** todo se cambia desde **un solo archivo** (`config.js`)
+- ✅ **Acepta imágenes citadas:** en `removebg`, `iqc` y `fakenote` puedes citar una foto y el bot la sube a internet por ti
+- ✅ Cero dependencias pesadas (no necesita ffmpeg ni base de datos)
+
+---
+
+## 📋 Requisitos
+
+| Requisito | Detalle |
+|---|---|
+| **Node.js** | Versión **18 o superior** (recomendado 20+) |
+| **Un número de WhatsApp** | Puede ser tu número o un número secundario |
+| **Internet** | Estable, obviamente 😄 |
+| **API Key** | Ya viene una incluida (`UDYRB6`) para empezar |
+
+> 💡 **NO necesitas** tarjeta de crédito, ni pagar nada, ni bases de datos.
+
+---
+
+## 📱 Instalación en TERMUX (Android)
+
+**Paso a paso, desde cero:**
+
+### 1️⃣ Instala Termux
+Descarga Termux **solo desde F-Droid** (la versión de Play Store está desactualizada):
+👉 https://f-droid.org/packages/com.termux/
+
+### 2️⃣ Prepara Termux
+Abre Termux y ejecuta estos comandos **uno por uno**:
+
+```bash
+pkg update && pkg upgrade -y
+```
+> Si pregunta algo (`Do you want to continue? [Y/n]`) escribe `Y` y Enter.
+
+```bash
+pkg install nodejs git -y
+```
+
+Verifica que Node.js quedó bien instalado:
+```bash
+node -v
+```
+> Debe mostrar `v18.x.x` o superior. ✅
+
+### 3️⃣ Descarga el bot
+
+**Opción A — con git (recomendada):**
+```bash
+git clone https://github.com/lyanvalentinmail-prog/BaseBot.git
+cd BaseBot
+```
+
+**Opción B — sin git (descargar ZIP):**
+1. En tu navegador entra al repositorio y pulsa **Code → Download ZIP**
+2. En Termux:
+```bash
+termux-setup-storage
+```
+> Acepta el permiso de almacenamiento.
+```bash
+cd /sdcard/Download
+pkg install unzip -y
+unzip BaseBot-main.zip
+cd BaseBot-main
+```
+
+### 4️⃣ Instala las dependencias
+```bash
+npm install
+```
+> Puede tardar 1-5 minutos. Si sale algún error, revisa la sección [🔧 SOLUCIÓN DE ERRORES](#-solución-de-errores).
+
+### 5️⃣ Configura tu número
+```bash
+nano config.js
+```
+Busca la línea:
+
+```js
+pairingNumber: '',       // ⭐ Tu número con código de país
+```
+
+y pon tu número **con código de país, sin `+` ni espacios**. Ejemplo:
+```js
+pairingNumber: '521234567890',
+```
+
+> En `nano`: escribes, luego presionas `CTRL + X`, luego `Y`, luego `Enter` para guardar.
+
+También aprovecha de cambiar:
+```js
+owner: ['521234567890'],   // 👈 tu mismo número (para ser el dueño del bot)
+ownerName: 'Tu Nombre',
+botName: 'El Nombre De Tu Bot',
+```
+
+### 6️⃣ ¡Inicia el bot!
+```bash
+npm start
+```
+
+Aparecerá algo como:
+
+```
+╔══════════════════════════════╗
+   🔑 CÓDIGO DE VINCULACIÓN
+        ➜  ABCD-1234
+╚══════════════════════════════╝
+```
+
+### 7️⃣ Vincula WhatsApp
+1. Abre **WhatsApp** en tu teléfono
+2. Ve a **Ajustes → Dispositivos vinculados → Vincular un dispositivo**
+3. Pulsa **«Vincular con número de teléfono»**
+4. Escribe el **código de 8 dígitos** que aparece en Termux
+
+✅ ¡Listo! El bot dirá **«BOT CONECTADO»**. Escríbete `.menu` a ti mismo o escribe el comando desde otro chat.
+
+### 🔄 Mantenerlo encendido en Termux
+Termux se puede cerrar si el teléfono se suspende. Para evitarlo:
+- Ejecuta `termux-wake-lock` antes de `npm start`
+- En las opciones de batería de Android, pon Termux como **«sin restricciones»**
+- Para volver a encenderlo otro día: abre Termux → `cd BaseBot` → `npm start`
+
+---
+
+## 💻 Instalación en Windows
+
+1. **Instala Node.js LTS:** https://nodejs.org (descarga el instalador, siguiente-siguiente-fin)
+2. **Instala Git:** https://git-scm.com/download/win
+3. Abre **CMD** o **PowerShell** y verifica:
+   ```cmd
+   node -v
+   ```
+4. Descarga el bot:
+   ```cmd
+   git clone https://github.com/lyanvalentinmail-prog/BaseBot.git
+   cd BaseBot
+   ```
+   *(o descarga el ZIP y extráelo, luego `cd` a la carpeta)*
+5. Instala dependencias:
+   ```cmd
+   npm install
+   ```
+6. Edita `config.js` con el Bloc de notas o VS Code (campo `pairingNumber`, `owner`, etc.)
+7. Inicia:
+   ```cmd
+   npm start
+   ```
+8. Vincula con el código que aparece (ver [🔑 VINCULAR](#-vincular-el-bot-con-whatsapp))
+
+---
+
+## 🖥️ Instalación en VPS (Ubuntu/Debian)
+
+```bash
+# 1. Actualizar
+sudo apt update && sudo apt upgrade -y
+
+# 2. Instalar Node.js 20 LTS
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo bash -
+sudo apt install -y nodejs git
+
+# 3. Descargar el bot
+git clone https://github.com/lyanvalentinmail-prog/BaseBot.git
+cd BaseBot
+
+# 4. Instalar dependencias
+npm install
+
+# 5. Configurar (pon tu número en pairingNumber)
+nano config.js
+```
+
+### Mantenerlo encendido 24/7 con PM2 (recomendado):
+```bash
+npm install -g pm2
+pm2 start index.js --name basebot
+pm2 save
+pm2 startup        # copia y ejecuta el comando que te muestra
+```
+Comandos útiles de PM2:
+```bash
+pm2 logs basebot    # ver registros
+pm2 restart basebot # reiniciar
+pm2 stop basebot    # detener
+```
+
+---
+
+## 📦 Instalación en PANELES de hosting (Pterodactyl, etc.)
+
+Si compras/usas un panel de hosting de bots:
+
+1. Crea un servidor con el **egg de Node.js** (versión 18+)
+2. Comprime todo el proyecto (sin `node_modules` ni `session`) en un **ZIP**
+3. Súbelo en la pestaña **Files** del panel y descomprímelo
+4. En **Startup** pon:
+   - Archivo de arranque: `index.js`
+   - o comando: `npm install && node index.js`
+5. Edita `config.js` desde el propio panel (campo `pairingNumber`)
+6. Inicia el servidor y vincula con el código que sale en la **consola**
+
+---
+
+## 🔑 VINCULAR el bot con WhatsApp
+
+Hay **dos formas**. Se elige en `config.js`:
+
+### Método 1: Código de 8 dígitos ⭐ (recomendado)
+```js
+usePairingCode: true,
+pairingNumber: '521234567890',   // 👈 OBLIGATORIO: tu número con código de país
+```
+Al iniciar verás el código en consola. Luego en WhatsApp:
+**Ajustes → Dispositivos vinculados → Vincular un dispositivo → «Vincular con número de teléfono»** → escribes el código.
+
+> ⚠️ **Importante:**
+> - Escríbelo **SIN el guion** (8 caracteres seguidos, ej: `ABCD1234`)
+> - El código **expira en ~2 minutos**: si tardaste, reinicia el bot y usa el nuevo
+> - Debes escribirlo **en el WhatsApp del MISMO número** que pusiste en `pairingNumber`
+
+### Método 2: Código QR
+```js
+usePairingCode: false,
+```
+Al iniciar aparecerá un **QR en la terminal**. Escanéalo desde:
+**Ajustes → Dispositivos vinculados → Vincular un dispositivo** (apuntando con la cámara).
+
+> 💡 Si dejaste `usePairingCode: true` pero no pusiste número, también puedes iniciar con `npm run qr` para forzar el modo QR.
+
+### 📵 Cerrar sesión / cambiar de número
+Borra la carpeta `session` y vuelve a iniciar:
+```bash
+rm -rf session
+npm start
+```
+
+---
+
+## ⚙️ PERSONALIZACIÓN (config.js)
+
+**TODO esto se cambia en `config.js`, sin tocar nada más:**
+
+| Opción | Qué hace | Ejemplo |
+|---|---|---|
+| `apiUrl` | URL base de la API Akari | `'https://apiakari.vercel.app'` |
+| `apiKey` | ⭐ Tu API key | `'UDYRB6'` |
+| `apiTimeout` | Tiempo máx. de espera de la API (ms) | `120000` |
+| `omdbKey` / `giphyKey` / `footballKey` / `elevenlabsKey` | 🌐 Keys gratuitas de las APIs externas | Ver [🌐 APIs externas](#-apis-externas-gratis-cómo-conseguir-cada-key) |
+| `elevenVoiceId` | ID de la voz del comando `.voz` | `'EXAVITQu4vr4xnSDxMaL'` |
+| `owner` | Números de los dueños (array) | `['521234567890', '34612345678']` |
+| `ownerName` | Nombre del creador | `'Leonel'` |
+| `botName` | Nombre del bot (sale en el menú) | `'𝙼𝚒 𝙱𝚘𝚝 ✦'` |
+| `packname` | Nombre del paquete | `'MiBot'` |
+| `author` | Autor | `'Leonel'` |
+| `wm` | Marca de agua en los captions | `'✦ Mi Bot ✦'` |
+| `prefix` | Prefijo(s) de comandos | `'.'` — o varios: `['.', '#', '/', '!']` |
+| `usePairingCode` | `true` = código 8 dígitos / `false` = QR | `true` |
+| `pairingNumber` | Tu número para vincular | `'521234567890'` |
+| `sessionName` | Carpeta de la sesión | `'session'` |
+| `self` | `true` = solo el dueño usa el bot | `false` |
+| `replyUnknown` | Responde cuando el comando no existe | `false` |
+| `showErrors` | Muestra detalles técnicos de errores | `true` |
+| `autoRead` | Marca los comandos como leídos (✓✓ azul) | `true` |
+| `mess.*` | Todos los textos del bot (espera, errores, permisos…) | ¡Tradúcelos o cámbialos a tu estilo! |
+| `menu.*` | 🎨 **Estilo completo del `.menu`** (encabezado, categorías, iconos, orden) | Ver [🎨 Cambiar el estilo del menú](#-cambiar-el-estilo-del-menú) |
+| `welcome` | Activa/desactiva la bienvenida en grupos | `true` / `false` |
+| `welcomeMsg` | Mensaje cuando alguien entra. Placeholders: `@user` `{group}` `{count}` | `'👋 ¡Bienvenido/a @user a *{group}*! 🎉…'` |
+| `goodbyeMsg` | Mensaje cuando alguien sale (mismos placeholders) | `'👋 @user salió del grupo…'` |
+
+> 🎨 **Tip:** puedes poner emojis y letras especiales en `botName`, `wm` y los mensajes. Usa el comando `.font tu texto` del propio bot para generar letras bonitas.
+
+---
+
+## 🌙 API KEY — qué es y cómo conseguirla
+
+### ¿Qué es?
+La API **Akari / Hoshino** ([apiakari.vercel.app](https://apiakari.vercel.app)) es el cerebro externo del bot: descargas, IA, imágenes, herramientas… Todo pasa por ella, y para usarla necesitas una **API key** (una contraseña corta que identifica tu cuenta).
+
+### ✅ Ya tienes una incluida
+El bot viene configurado con la key:
+```
+UDYRB6
+```
+Con ella puedes arrancar y probar **todos** los comandos inmediatamente.
+
+### 🔑 Cómo conseguir tu PROPIA key (recomendado para uso serio)
+Las keys compartidas pueden tener **límites de peticiones**. Para no depender de nadie:
+
+1. Entra a 👉 **https://apiakari.vercel.app**
+2. Crea una **cuenta** (regístrate con tu correo/usuario)
+3. Ve a tu **Dashboard / Perfil**
+4. Ahí encontrarás tu **API Key** personal (según tu plan: free o premium)
+5. Cópiala y pégala en `config.js`:
+   ```js
+   apiKey: 'TU_NUEVA_KEY_AQUI',
+   ```
+6. Guarda y reinicia el bot.
+
+### 🩺 Verifica que tu key funciona
+Con el bot encendido, escribe en WhatsApp:
+```
+.apitest
+```
+Debe responder **«✅ API Akari conectada correctamente»**.
+
+### 🔍 Otras APIs (opcional, si expandes el bot)
+El bot **NO necesita más keys**, pero si algún día agregas otras APIs externas, el proceso siempre es igual: registrarte en la web de la API → copiar la key → pegarla en `config.js` (puedes crear más campos, ej: `openaiKey: '...'`).
+
+---
+
+## 📚 LISTA COMPLETA DE COMANDOS
+
+> El prefijo por defecto es `.` (también `#` y `/`). Ejemplo: `.tiktok <url>`
+
+### 🏠 Principal
+| Comando | Descripción |
+|---|---|
+| `.menu` | Muestra este menú (se genera automático) |
+| `.ping` | Velocidad del bot |
+| `.uptime` | Tiempo activo |
+| `.owner` | Tarjeta de contacto del creador |
+| `.id` | Muestra los IDs del chat |
+| `.apitest` | Verifica tu API key |
+
+### 🤖 Inteligencia Artificial
+| Comando | Uso | Descripción |
+|---|---|---|
+| `.gemini` | `<texto>` | Google Gemini |
+| `.chatgpt` / `.gpt` / `.ia` | `<texto>` | ChatGPT |
+| `.deepseek` / `.ds` | `<texto>` | DeepSeek |
+| `.novaai` / `.nova` | `<texto>` | NovaAI |
+
+### 📥 Descargas
+| Comando | Uso | Descripción |
+|---|---|---|
+| `.tiktok` / `.tt` | `<url>` | Videos de TikTok |
+| `.facebook` / `.fb` | `<url>` | Videos de Facebook |
+| `.instagram` / `.ig` | `<url>` | Videos/fotos de Instagram |
+| `.x` / `.twitter` | `<url>` | Videos de X/Twitter |
+| `.threads` | `<url>` | Videos de Threads |
+| `.pinterestdl` / `.pindl` | `<url>` | Media de Pinterest |
+| `.spotifydl` / `.spdl` | `<url>` | Canción de Spotify |
+| `.ytmp3` / `.mp3` | `<url>` | YouTube → audio |
+| `.ytmp4` / `.mp4` | `<url>` | YouTube → video |
+| `.gdrive` | `<url>` | Archivos de Google Drive |
+| `.terabox` | `<url>` | Archivos de Terabox |
+| `.apkpure` | `<paquete>` | APK desde APKPure (ej: `com.whatsapp`) |
+| `.aptoidedl` | `<paquete>` | APK desde Aptoide |
+| `.stickers` | `<búsqueda>` | Envía hasta 5 stickers |
+
+### 🖼️ Imágenes
+| Comando | Uso | Descripción |
+|---|---|---|
+| `.bluearchive` | — | Imagen random de Blue Archive |
+| `.china` / `.korea` / `.vietnam` | — | Imágenes random asiáticas |
+| `.wallpaper` / `.wp` | `<búsqueda>` | Fondos de pantalla |
+| `.removebg` / `.nobg` | `<url>` o **cita una imagen** | Quita el fondo |
+
+### 🎨 Creadores
+| Comando | Uso | Descripción |
+|---|---|---|
+| `.brat` | `<texto>` | Imagen estilo "brat" |
+| `.fakenote` | `nombre\|mensaje` | Nota falsa (acepta foto citada como avatar) |
+| `.iqc` | `<url>` o **cita una imagen** | Burbuja estilo iPhone |
+
+### 🔍 Búsquedas
+| Comando | Uso | Descripción |
+|---|---|---|
+| `.aptoide` | `<búsqueda>` | Busca apps (luego usa `.aptoidedl`) |
+| `.lyrics` / `.letra` | `<canción>` | Letras de canciones |
+| `.pinterest` / `.pin` | `<búsqueda>` | Imágenes de Pinterest |
+| `.spotify` | `<búsqueda>` | Canciones de Spotify |
+
+### 👤 Stalk
+| Comando | Uso | Descripción |
+|---|---|---|
+| `.githubstalk` / `.github` | `<usuario>` | Perfil de GitHub |
+| `.threadsstalk` | `<usuario>` | Perfil de Threads |
+| `.tiktokstalk` / `.ttstalk` | `<usuario>` | Perfil de TikTok |
+
+### 🛠️ Herramientas
+| Comando | Uso | Descripción |
+|---|---|---|
+| `.font` / `.letras` | `<texto>` | Letras bonitas |
+| `.ssweb` | `<url>` | Captura de una página web |
+| `.timezone` / `.hora` | `<país>` | Hora de un país |
+| `.translate` / `.tr` | `<idioma> <texto>` | Traductor (ej: `.tr en hola`) |
+| `.tweetss` | `<url>` | Captura de un tweet |
+| `.weather` / `.clima` | `<país/ciudad>` | El clima |
+| `.yt` / `.ytinfo` | `<url>` | Info de YouTube |
+| `.wainfo` | `<enlace de grupo>` | Info de un grupo de WhatsApp |
+
+### 👥 Grupo (solo admins)
+| Comando | Uso | Descripción |
+|---|---|---|
+| `.hidetag` | `<texto>` | Menciona a todos (invisible) |
+| `.link` | — | Enlace del grupo (bot debe ser admin) |
+| `.kick` | `@usuario` | Expulsa a alguien |
+| `.promote` | `@usuario` | Da admin |
+| `.demote` | `@usuario` | Quita admin |
+
+### 🌐 APIs Externas — SIN key (¡funcionan ya!)
+| Comando | Uso | Descripción |
+|---|---|---|
+| `.fraseanime` | — | Frase random de anime 🌸 |
+| `.pais` | `<nombre>` | Info + bandera de un país |
+| `.quees` | `<tema>` | Respuesta instantánea (mejor en inglés) |
+| `.definir` | `<palabra>` | Diccionario inglés + pronunciación 🔊 |
+| `.comida` | — | Foto random de comida 🍕 |
+| `.libro` | `<título>` | Busca libros + portada |
+| `.anime` | `<nombre>` | Busca animes + póster |
+| `.clima2` | `<ciudad>` | Clima pro (Open-Meteo) |
+
+### 🌐 APIs Externas — CON key gratis
+| Comando | Uso | Descripción | Key |
+|---|---|---|---|
+| `.pelicula` | `<título>` | Póster + datos de pelis/series | `omdbKey` |
+| `.gif` | `<búsqueda>` | GIFs de Giphy (se reproducen solos) | `giphyKey` |
+| `.futbol` | — | ⚽ Partidos de hoy con marcadores | `footballKey` |
+| `.envivo` | — | 🔴 Partidos jugándose AHORA | `footballKey` |
+| `.voz` | `<texto>` | Texto a voz natural (español OK) 🔊 | `elevenlabsKey` |
+
+> 🔑 ¿No pusiste la key? Tranquilo: el comando te responderá **con el enlace exacto** para conseguirla gratis. Ver [🌐 APIs externas](#-apis-externas-gratis-cómo-conseguir-cada-key).
+
+### 🎮 Juegos
+| Comando | Uso | Descripción |
+|---|---|---|
+| `.dado` | — | Tira un dado 🎲 |
+| `.moneda` | — | Cara o cruz 🪙 |
+| `.suerte` | `@usuario?` | % de suerte del día |
+| `.ppt` | `piedra/papel/tijera` | Juega contra el bot |
+| `.ship` | `@a @b` | Test de compatibilidad 💕 |
+| `.top` | `<tema>` | Top 5 al azar del grupo (solo grupos) |
+
+### 👑 Owner (solo el dueño)
+| Comando | Uso | Descripción |
+|---|---|---|
+| `.self` | — | Solo el dueño usa el bot |
+| `.public` | — | Todos pueden usar el bot |
+| `.setprefix` | `<símbolo>` | Cambia el prefijo (en memoria) |
+| `.setbotname` | `<nombre>` | Cambia el nombre del bot (en memoria) |
+| `.plugins` | — | Lista los plugins cargados |
+| `.join` | `<enlace>` | El bot se une a un grupo |
+| `.leave` | — | El bot sale del grupo |
+| `.restart` | — | Reinicia el bot (con PM2/panel vuelve solo) |
+
+---
+
+## 🌐 APIS EXTERNAS GRATIS (cómo conseguir cada key)
+
+El bot suma comandos de APIs de **[freeapihub.com/apis](https://freeapihub.com/apis)**. Las que dicen **SIN key** ya funcionan. Para las demás, así consigues la key **gratis** (2 minutos cada una):
+
+### 🎬 OMDb → `omdbKey` (películas y series)
+1. Entra a **https://www.omdbapi.com/apikey.aspx**
+2. Pon tu email, elige el plan **FREE!** y confirma desde el correo que te llega
+3. Te dan tu key (ej: `a1b2c3d4`) → pégala en `config.js`
+4. Límite gratis: **1.000 peticiones/día**
+
+### 🎞️ Giphy → `giphyKey` (GIFs)
+1. Entra a **https://developers.giphy.com** y crea cuenta
+2. Pulsa **"Create an App"** → elige **API** (no SDK) → ponle cualquier nombre
+3. Copia la **API Key** que aparece → pégala en `config.js`
+
+### ⚽ API-FOOTBALL → `footballKey` (partidos y marcadores)
+1. Entra a **https://www.api-football.com** y crea una cuenta gratuita
+2. En tu **Dashboard** verás tu **API-KEY**
+3. Pégala en `config.js`
+4. Límite gratis: **100 peticiones/día** (de sobra para uso normal)
+
+### 🔊 ElevenLabs → `elevenlabsKey` (texto a voz)
+1. Entra a **https://elevenlabs.io** y regístrate
+2. Ve a **Profile → API Keys** y crea una key
+3. Pégala en `config.js`
+4. Incluye **10.000 caracteres/mes gratis**; la voz por defecto está en `elevenVoiceId` (puedes elegir otra en su web y cambiar el ID)
+
+> ✅ Después de pegar las keys: guarda `config.js` y **reinicia el bot** (`CTRL + C` → `npm start`).
+> 💡 Si un comando necesita key y no la pusiste, el propio bot te responde con estas instrucciones en WhatsApp.
+
+### 🆓 Y estas NO necesitan key de nada
+`.fraseanime` · `.pais` · `.quees` · `.definir` · `.comida` · `.libro` · `.anime` · `.clima2`
+Funcionan desde ya, sin registrar nada. 🎉
+
+---
+
+## ➕ CÓMO AGREGAR PLUGINS (tus propios comandos)
+
+El bot está pensado para ser una **BASE**. Crear un comando nuevo = **crear un archivo `.js` dentro de la carpeta del grupo** que corresponda.
+
+### 📁 ¿Cómo están organizados los plugins?
+
+```
+plugins/
+├── 📂 principal/     → menu, ping, owner…
+├── 📂 ia/            → gemini, chatgpt, deepseek, novaai…
+├── 📂 descargas/     → tiktok, ytmp3, terabox…
+├── 📂 imagen/        → wallpaper, removebg…
+├── 📂 maker/         → brat, fakenote, iqc…
+├── 📂 busqueda/      → lyrics, pinterest…
+├── 📂 stalk/         → github, tiktok…
+├── 📂 herramientas/  → translate, weather, font…
+├── 📂 juegos/        → dado, moneda, suerte, ppt, ship, top…
+├── 📂 grupo/         → hidetag, kick, promote…
+└── 📂 owner/         → self, public, setprefix, restart… (solo dueño 👑)
+```
+
+- **Cada CARPETA es un grupo de comandos.** Es solo para que tú te ordenes.
+- **Cada ARCHIVO `.js` dentro puede tener 1 o varios comandos.**
+- ¿En qué apartado del `.menu` aparece? Eso lo decide `h.tags = ['...']`, no la carpeta — pero lo ideal es que carpeta y tag coincidan.
+- 🔥 **Todo se recarga SOLO:** al crear/editar/borrar cualquier archivo el bot lo detecta y recarga sin reiniciar.
+
+### 🅰️ Ejemplo: agregar un comando con las fábricas (¡1 línea!)
+
+1. Crea el archivo `plugins/ia/llama.js`:
+2. Pega esto (🏷️ ojo: desde una subcarpeta se usa `../../lib/`):
+
+```js
+const { aiCommand, mediaCommand, textCommand } = require('../../lib/commands')
+
+module.exports = [
+
+  // 🤖 Nueva IA (endpoint que devuelve texto con ?text=)
+  aiCommand('llama', '/api/ai/llama', { ej: 'hola' }),
+
+  // 📥 Nuevo descargador (endpoint que devuelve archivos con ?url=)
+  mediaCommand('kwai', '/api/downloader/kwai', {
+    param: 'url', prefer: 'video', tag: 'descargas',
+    ej: 'https://kwai.com/video/123'
+  }),
+
+  // 📄 Nueva búsqueda (endpoint que devuelve texto con ?q=)
+  textCommand('mangas', '/api/search/manga', {
+    param: 'q', paramName: '<nombre>', tag: 'busqueda',
+    ej: 'naruto'
+  })
+]
+```
+
+3. Guarda el archivo → verás `♻️ Cambio detectado… ✅` en la consola → ya funciona `.llama` y aparece en `.menu`. ✨
+
+**Opciones de las fábricas:**
+| Opción | Significado |
+|---|---|
+| `param` | Parámetro que pide la API (`'url'`, `'q'`, `'query'`, `'text'`, `'user'`, `'pkg'`…). `null` = no pide texto |
+| `paramName` | Cómo se ve en la ayuda (`'<url>'`, `'<búsqueda>'`…) |
+| `prefer` | `'video'` \| `'audio'` \| `'image'` \| `'document'` \| `'sticker'` |
+| `alias` | Otros nombres del comando: `alias: ['tt', 'tiktokdl']` |
+| `tag` | Categoría del menú (`'ia'`, `'descargas'`, `'imagen'`, `'maker'`, `'busqueda'`, `'stalk'`, `'herramientas'`, `'externas'`, `'juegos'`, `'grupo'`, `'owner'`, `'principal'`) |
+| `ej` | Ejemplo que sale si el usuario no escribe nada |
+
+### 🅱️ Ejemplo: comando manual (control total)
+
+Archivo `plugins/herramientas/saludar.js`:
+
+```js
+const { akari, sendResult, pickAnswer } = require('../../lib/akari')
+
+let h = async (m, { conn, text, args, usedPrefix, command, isOwner }) => {
+  if (!text) return m.reply(`❌ Uso: ${usedPrefix}${command} <texto>`)
+
+  await m.react('⏳')                       // reacción de "cargando"
+
+  // Llamar a la API de Akari (la key se agrega sola):
+  const res = await akari('/api/ai/gemini', { text })
+
+  // Opción 1: enviar respuesta automática (detecta imágenes/videos/texto)
+  await sendResult(conn, m, res, { prefer: 'image' })
+
+  // Opción 2 (solo texto de IA):
+  // if (res.type === 'json') await m.reply(pickAnswer(res.data))
+}
+h.help = ['saludar <texto>']     // cómo aparece en el menú
+h.tags = ['herramientas']        // categoría del menú
+h.command = ['saludar', 'hola']  // nombres que activan el comando
+// h.rowner = true               // solo dueño (opcional)
+// h.group = true                // solo grupos (opcional)
+// h.admin = true                // solo admins (opcional)
+// h.botAdmin = true             // bot admin requerido (opcional)
+module.exports = h
+```
+
+### 🅲️ Ejemplo: comando SIN API (100% WhatsApp con Baileys)
+
+Archivo `plugins/grupo/miembros.js`:
+
+```js
+let h = async (m, { conn, participants }) => {
+  await m.reply(`👥 Este grupo tiene *${participants.length}* miembros.`)
+}
+h.help = ['miembros']
+h.tags = ['grupo']
+h.command = ['miembros']
+h.group = true
+module.exports = h
+```
+
+### 🆕 ¿Quieres crear un GRUPO nuevo? (ej: "Juegos")
+
+1. Crea la carpeta: `plugins/juegos/`
+2. Crea un archivo dentro, ej: `plugins/juegos/suerte.js`, con `h.tags = ['juegos']`:
+   ```js
+   let h = async (m) => {
+     await m.reply(`🍀 Tu suerte de hoy: ${Math.floor(Math.random() * 101)}%`)
+   }
+   h.help = ['suerte']
+   h.tags = ['juegos']
+   h.command = ['suerte']
+   module.exports = h
+   ```
+3. Para que en el menú salga con nombre e icono bonitos, agrégalo en `config.js` → `menu.tags`:
+   ```js
+   tags: {
+     // ...las que ya existen...
+     juegos: { name: 'Juegos', icon: '🎮' }
+   }
+   ```
+   > Si no lo agregas, igual funciona: el menú lo mostrará con el icono genérico ✨.
+
+**Cosas útiles que tienes dentro de cualquier comando:**
+| Variable | Contenido |
+|---|---|
+| `m.chat` | ID del chat |
+| `m.sender` / `m.senderNumber` | Quién escribió |
+| `m.pushName` | Su nombre |
+| `m.isGroup` | Si es grupo |
+| `m.quoted` | Mensaje citado (`.text`, `.download()`…) |
+| `m.mentionedJid` | Menciones |
+| `m.reply('hola')` | Responder |
+| `m.react('🔥')` | Reaccionar |
+| `m.download()` | Descargar imagen/video citado |
+| `conn.sendMessage(m.chat, { image: buffer })` | Enviar imagen |
+| `text` / `args` | Lo que escribió después del comando |
+| `conn` | La conexión de Baileys (poder total) → [docs](https://github.com/WhiskeySockets/Baileys) |
+
+---
+
+## 🎨 CAMBIAR EL ESTILO DEL MENÚ
+
+El **estilo completo del `.menu` se edita desde `config.js`**, sección **`menu`** — no toques código de plugins para personalizarlo.
+
+### 👀 Así se ve tu menú actual
+
+```
+╭═══ ≪ *𝘽𝙖𝙨𝙚𝘽𝙤𝙩 ✦* ≫ ═══╮
+│
+│ 👤 *Hola:* Leonel
+│ ⏱️ *Activo:* 0h 12m 5s
+│ 📚 *Comandos:* 128
+│ 🔑 *Prefijo:* . # /
+│ 👑 *Creador:* Tu Nombre
+│ 🌙 *API:* Akari 🌙
+│
+╰═══════════════════╯
+
+╭─「 🤖 *Inteligencia Artificial* 」
+│ ◦ .chatgpt <texto>
+│ ◦ .deepseek <texto>
+│ ◦ .gemini <texto>
+│ ◦ .novaai <texto>
+╰──────────────
+
+╭─「 📥 *Descargas* 」
+│ ◦ .apkpure <paquete>
+...
+```
+
+### ✏️ Las piezas que puedes cambiar (en `config.js`)
+
+```js
+menu: {
+  header: `╭═══ ≪ *{botName}* ≫ ═══╮      ← ENCABEZADO
+│ ...                                   (usa {placeholders})
+╰═══════════════════╯`,
+
+  catTop: '╭─「 {icon} *{name}* 」',       // ← título de cada categoría
+  catCmd: '│ ◦ {prefix}{help}',            // ← línea de cada comando
+  catBottom: '╰──────────────',            // ← cierre de cada categoría
+  footer: '> {wm}',                        // ← FINAL del menú
+
+  tags: { ... }                            // ← nombre + icono + ORDEN de categorías
+}
+```
+
+### 🏷️ Placeholders disponibles
+
+| Placeholder | Se reemplaza por… | Dónde |
+|---|---|---|
+| `{botName}` | Nombre del bot (config) | header / footer |
+| `{user}` | Nombre de quien pidió el menú | header / footer |
+| `{uptime}` | Tiempo activo (`2h 5m 3s`) | header / footer |
+| `{commands}` | Nº total de comandos | header / footer |
+| `{prefix}` | Prefijo principal (el primero) | líneas de comandos |
+| `{prefixes}` | Todos los prefijos (`. # /`) | header |
+| `{owner}` | Nombre del creador | header / footer |
+| `{api}` | Nombre de la API | header / footer |
+| `{wm}` | Marca de agua | header / footer |
+| `{date}` / `{time}` | Fecha y hora actuales | header / footer |
+| `{icon}` | Icono de la categoría | catTop / catCmd |
+| `{name}` | Nombre de la categoría | catTop / catCmd / catBottom |
+| `{tag}` | Etiqueta interna (`"ia"`, `"grupo"`…) | catTop / catCmd |
+| `{help}` | Texto de ayuda del comando (`gemini <texto>`) | catCmd |
+
+### 🌟 Ejemplos de estilos listos para copiar
+
+**Estilo minimalista:**
+```js
+menu: {
+  header: `┏━━『 {botName} 』━━┓
+┃ 👤 {user}   ⏱️ {uptime}
+┃ 📚 {commands} comandos   🔑 {prefix}
+┗━━━━━━━━━━━━┛`,
+  catTop: '┏━『 {icon} {name} 』',
+  catCmd: '┃ ▹ {prefix}{help}',
+  catBottom: '┗━━━━━━━━━━━',
+  footer: '_Hecho con ❤️_',
+  tags: { /* …igual que antes… */ }
+}
+```
+
+**Estilo simple sin bordes:**
+```js
+menu: {
+  header: `✦ ━━━ *{botName}* ━━━ ✦
+Hola *{user}* 👋
+Tengo *{commands}* comandos • Activo {uptime}`,
+  catTop: '\n{icon} *— {name} —*',
+  catCmd: '   ◦ {prefix}{help}',
+  catBottom: '',
+  footer: '━━━━━━━━━━\n{wm}',
+  tags: { /* …igual que antes… */ }
+}
+```
+
+### 🔁 ¿Cómo reordenar / renombrar las categorías?
+
+En `config.js` → `menu.tags`, cambia el orden de las líneas o edita nombres e iconos:
+
+```js
+tags: {
+  descargas:    { name: 'DESCARGAS 🎬', icon: '📥' },   // 👈 primero las descargas
+  ia:           { name: 'IA ✨',        icon: '🤖' },
+  principal:    { name: 'Principal',    icon: '🏠' },
+  // …el resto
+}
+```
+
+> ⚠️ Los cambios en `config.js` **sí requieren reiniciar el bot** (`CTRL + C` y `npm start`). Los cambios en archivos de `plugins/` se recargan solos. 🔥
+
+---
+
+## 🗂️ Estructura del proyecto
+
+```
+BaseBot/
+├── 📄 index.js          → Arranque: conexión, sesión, carga de plugins
+├── 📄 handler.js        → Lee mensajes y ejecuta comandos
+├── 📄 config.js         → ⭐ TODA LA PERSONALIZACIÓN AQUÍ (incluye el ESTILO DEL MENÚ)
+├── 📄 package.json      → Dependencias del proyecto
+├── 📂 lib/
+│   ├── akari.js         → Cliente de la API + formateo/envío inteligente
+│   ├── commands.js      → Fábricas: crea comandos con 1 línea
+│   ├── serialize.js     → Convierte mensajes en objetos fáciles (m.reply…)
+│   └── upload.js        → Sube imágenes citadas a internet (catbox)
+├── 📂 plugins/          → 🔥 Cada CARPETA = un grupo de comandos
+│   │                      (recarga automática al editar/crear archivos)
+│   ├── 📂 principal/
+│   │   └── main.js        → menu, ping, uptime, owner, id, apitest
+│   ├── 📂 ia/
+│   │   └── ai.js          → gemini, chatgpt, deepseek, novaai
+│   ├── 📂 descargas/
+│   │   └── downloader.js  → tiktok, ytmp3, terabox, stickers…
+│   ├── 📂 imagen/
+│   │   └── image.js       → wallpaper, removebg, bluearchive…
+│   ├── 📂 maker/
+│   │   └── maker.js       → brat, fakenote, iqc
+│   ├── 📂 busqueda/
+│   │   └── search.js      → lyrics, pinterest, spotify, aptoide
+│   ├── 📂 stalk/
+│   │   └── stalk.js       → github, tiktok, threads
+│   ├── 📂 herramientas/
+│   │   └── tools.js       → translate, weather, font, ssweb…
+│   ├── 📂 externas/
+│   │   ├── sin-key.js     → pais, anime, libro, clima2, quees… (gratis sin key)
+│   │   └── con-key.js     → pelicula, gif, futbol, voz (key gratis)
+│   ├── 📂 juegos/
+│   │   └── juegos.js      → dado, moneda, suerte, ppt, ship, top
+│   ├── 📂 grupo/
+│   │   └── group.js       → hidetag, kick, promote, demote, link
+│   └── 📂 owner/
+│       └── owner.js       → self, public, setprefix, join, restart…
+└── 📂 session/          → (se crea sola) Sesión de WhatsApp ⚠️ NO LA COMPARTAS
+```
+
+> 📁 **Puedes crear carpetas y archivos nuevos dentro de `plugins/`** (ej: `plugins/juegos/dados.js`) y el bot los cargará automáticamente. Ver [➕ CÓMO AGREGAR PLUGINS](#-cómo-agregar-plugins-tus-propios-comandos).
+
+---
+
+## 🔧 SOLUCIÓN DE ERRORES
+
+### 🔴 Al INSTALAR (`npm install`)
+
+| Error | Solución |
+|---|---|
+| `node: command not found` / `-v` no muestra nada | No instalaste Node.js. En Termux: `pkg install nodejs`. En PC: instálalo de nodejs.org |
+| Versión vieja de Node (< 18) | Termux: `pkg upgrade nodejs`. PC: descarga la LTS nueva de nodejs.org. VPS: reinstala con NodeSource (ver arriba) |
+| `npm ERR!` genéricos en Termux | `pkg install python make clang libuuid -y` y reintenta `npm install` |
+| `EACCES: permission denied` (VPS/Linux) | NO uses `sudo npm install`. Corrige permisos: `sudo chown -R $USER:$USER .` |
+| `Cannot find module '@whiskeysockets/baileys'` | No corrió bien la instalación: borra `node_modules` y repite `rm -rf node_modules && npm install` |
+| Error de red al instalar | Revisa tu internet, o prueba `npm install --no-audit --no-fund` |
+
+### 🔴 Al INICIAR el bot
+
+| Problema | Solución |
+|---|---|
+| **«Código incorrecto» / «No es válido» al vincular** | Revisa en este orden: 1️⃣ Escríbelo **SIN el guion**, 8 caracteres seguidos. 2️⃣ El código **expira en ~2 minutos** → reinicia el bot y usa el código **nuevo** enseguida. 3️⃣ Escríbelo **en el WhatsApp del mismo número** que pusiste en `pairingNumber` (si lo escribes en otra cuenta, siempre dirá "incorrecto"). 4️⃣ Revisa que el número en `config.js` esté bien (con código de país, sin `+` ni espacios). 5️⃣ Si nada funciona, usa el QR: `npm run qr` |
+| **No aparece el código de emparejamiento** | Verifica que `pairingNumber` tenga tu número **con código de país** (ej: `52` México, `54` Argentina, `34` España) SIN `+`. Espera ~5 segundos tras iniciar |
+| **Quiero QR y no código** | Pon `usePairingCode: false` en config.js o inicia con `npm run qr` |
+| **El QR se ve deforme/no se puede escanear** | Agranda la ventana de la terminal. En Termux pellizca para alejar. O usa el código de 8 dígitos |
+| `Connection Failure` / código `428`, `405`, `408` | Se perdió la sesión. Borra la carpeta `session` y vuelve a vincular: `rm -rf session && npm start` |
+| `401` / `device_removed` / "sesión cerrada" | Cerraste sesión desde WhatsApp (Dispositivos vinculados). Borra `session` y vincula de nuevo |
+| Se cierra apenas abre | Mira el error con `showErrors: true`. Casi siempre es `config.js` mal editado: revisa comas y comillas |
+| "WhatsApp se queda en *esperando mensaje*" | Mensajes de cuentas recién vinculadas pueden tardar. Reenvía el comando. Si persiste, borra `session` y vincula otra vez |
+
+### 🔴 Con los COMANDOS
+
+| Problema | Solución |
+|---|---|
+| El bot **no responde** | 1) ¿Estás usando el prefijo? (`config.prefix`) 2) ¿Tienes `self: true`? (solo responde al dueño) 3) Revisa la consola: ahí verás el error real |
+| `❌ Error de la API: key inválida...` | Tu API key venció o tiene límite → consigue una nueva en [apiakari.vercel.app](https://apiakari.vercel.app) y ponla en `config.apiKey` |
+| `Falta el parámetro "key"` | La API no recibió key. El bot envía `key` **y** `apikey` automáticamente; si persiste, verifica `config.apiKey` con `.apitest` |
+| Los comandos de descarga responden pero **no llega el archivo** | El servicio de origen bloqueó la descarga o el archivo es enorme. Prueba otro enlace. Para gdrive/terabox sube `apiTimeout` |
+| `.removebg` / `.iqc` con foto citada falla | El hosting de imágenes (catbox) puede caer: reintenta, o pasa una URL directa |
+| Comandos de grupo dicen «Necesito ser administrador» | Haz admin **al bot** en el grupo (para `kick`, `promote`, `link`…) |
+| «Necesitas ser administrador» | Esos comandos son solo para admins (o el dueño del bot) |
+| La IA responde cosas raras o vacías | La API puede estar saturada: reintenta. Si es siempre, revisa `.apitest` y tu key |
+
+### 🔴 Misceláneos
+
+| Problema | Solución |
+|---|---|
+| **Cambié algo y no se refleja** | Los archivos de `plugins/` se recargan solos al guardar. Los cambios en `config.js`, `lib/`, `index.js` o `handler.js` **sí requieren reiniciar** (`CTRL + C` y `npm start`) |
+| Actualizar Baileys (si WhatsApp cambia algo) | `npm update @whiskeysockets/baileys` y reinicia |
+| Actualizar el bot a la última versión | `git pull` (si lo clonaste con git) |
+| ¿Cómo veo errores detallados? | `showErrors: true` en config (los manda al chat) y mira siempre la consola/terminal |
+
+---
+
+## ❓ Preguntas frecuentes
+
+**¿Es gratis?**
+Sí. Baileys es código abierto y la API Akari tiene plan gratuito (con límites por key).
+
+**¿Puedo usar mi número personal?**
+Sí, aunque se recomienda un número secundario (ver aviso abajo). El bot aparecerá como un «dispositivo vinculado» más.
+
+**¿Puedo tener varios bots con esta base?**
+¡Ese es el objetivo! 🎉 Clona el proyecto en otra carpeta, cambia `botName`, `prefix`, `sessionName` (ej: `'session2'`) y los comandos que quieras. Cada copia es un bot independiente.
+
+**¿Necesito dejar la PC/Termux encendida?**
+Sí: el bot funciona mientras el programa esté corriendo. Para 24/7 usa una **VPS con PM2** o un **panel de hosting**.
+
+**¿Puedo cambiar el idioma de los mensajes?**
+Sí, todos los textos están en `config.js` (`mess`) y dentro de cada plugin.
+
+**¿Cómo apago el bot?**
+`CTRL + C` en la terminal (o `pm2 stop basebot` si usas PM2).
+
+---
+
+## ⚠️ Aviso importante
+
+- Este proyecto usa **Baileys**, una librería no oficial de WhatsApp. WhatsApp **puede banear números** que usan bots, aunque es poco común con uso moderado. **Úsalo bajo tu responsabilidad** y preferiblemente con un número secundario.
+- **NUNCA compartas la carpeta `session/`**: quien la tenga puede entrar a tu WhatsApp.
+- No uses el bot para spam ni actividades ilegales.
+- Respeta los límites y términos de la API Akari.
+
+---
+
+<div align="center">
+
+### 🌙 Créditos
+**API Akari / Hoshino** → [apiakari.vercel.app](https://apiakari.vercel.app) • Creadora: *Moonlight*
+**Librería** → [@whiskeysockets/baileys](https://github.com/WhiskeySockets/Baileys)
+
+**BASEBOT** — hecha con ❤️ para que crees tus propios bots ✦
+
+</div>

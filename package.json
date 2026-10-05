@@ -1,0 +1,30 @@
+{
+  "name": "basebot",
+  "version": "1.0.0",
+  "description": "🤖 Bot base de WhatsApp con Baileys + API Akari (apiakari.vercel.app). Completamente personalizable y pensado para crear tus propios bots.",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "qr": "node index.js --qr"
+  },
+  "keywords": [
+    "whatsapp",
+    "bot",
+    "baileys",
+    "basebot",
+    "whatsapp-bot",
+    "termux"
+  ],
+  "author": "BaseBot",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "^6.7.9",
+    "pino": "^9.5.0",
+    "qrcode-terminal": "^0.12.0"
+  }
+}

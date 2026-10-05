@@ -1,0 +1,16 @@
+# Dependencias
+node_modules/
+
+# Sesión de WhatsApp (¡NUNCA la subas! equivale a tu cuenta)
+session/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Entorno
+.env
